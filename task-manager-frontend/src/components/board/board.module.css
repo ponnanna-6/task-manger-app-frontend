@@ -1,0 +1,42 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: start;
+    justify-content: start;
+}
+
+.headerText {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 3vw;
+    line-height: 4vw;
+    text-align: center;
+    color: #343434;
+}
+
+.boardHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 70vw;
+}
+
+.tasksContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: auto;
+    height: auto;
+    background-color: blue;
+}
+
+.taskCategory {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    height: 100px;
+    background-color: aliceblue;
+    margin: 1rem;
+}

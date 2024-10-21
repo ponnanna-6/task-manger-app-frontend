@@ -6,6 +6,8 @@
 
 .dashboardContainer {
     display: flex;
-    width: 80vw;
+    width: calc(100vw - 22vw); /* Subtract the width of the fixed navbar */
     height: 100vh;
+    margin-left: 22vw; /* Shift the content to the right to avoid overlap */
+    align-self: flex-end;
 }
