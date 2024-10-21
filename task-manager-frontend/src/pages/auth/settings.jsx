@@ -1,13 +1,26 @@
 import styles from './auth.module.css'
 import AstroImage from '../../assets/astro.png'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Form from '../../components/form/form'
 import { useNavigate } from 'react-router-dom'
-import { registerUser } from '../../services/auth'
+import { getUserInfo, registerUser, updateUserInfo } from '../../services/auth'
 import { validateEmail } from '../../helper/utils'
 
-export default function Register({}) {
+export default function Settings({}) {
     const navigate = useNavigate()
+
+    useEffect(() => {
+        const getData = async() => {
+            await getUserInfo().then((res) => {
+                if(res.status == "200") {
+                    setFormData({...formData, name: res.data?.name, email: res.data?.email})
+                }
+            })
+            .catch(error => navigate('/login'))
+        }
+        getData()
+    }, [])
+    
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -35,7 +48,7 @@ export default function Register({}) {
         },
         {
             name: "email",
-            placeholder: "Email",
+            placeholder: "Update Email",
             type: "email",
             value: formData?.email,
             onChange: (e) => {
@@ -45,7 +58,7 @@ export default function Register({}) {
         },
         {
             name: "password",
-            placeholder: "Password",
+            placeholder: "Old Password",
             type: "password",
             value: formData?.password,
             showPassword: false,
@@ -56,15 +69,13 @@ export default function Register({}) {
         },
         {
             name: "confirmPassword",
-            placeholder: "Confirm Password",
+            placeholder: "New Password",
             type: "password",
             value: formData?.confirmPassword,
             showPassword: false,
             onChange: (e) => {
-                setFormData({...formData, confirmPassword: e.target.value})
-                if(formData?.password == e.target.value) {      
-                    setError({...error, confirmPassword: false})
-                }
+                setFormData({...formData, confirmPassword: e.target.value})    
+                setError({...error, confirmPassword: false})
             },
         }
     ]
@@ -86,14 +97,14 @@ export default function Register({}) {
         }, 
         password: {
             message: "Password should be min 8 characters",
-            isValid: formData.password.length >= 8,
+            isValid: formData.password.length >= 8 || formData.password == "",
             onError: () => {
                 setError((error)=>({...error, password: true}))
             }
         },
         confirmPassword: {
-            message: "Passwords do not match",
-            isValid: formData.password === formData.confirmPassword,
+            message: "Password should be min 8 characters",
+            isValid: formData.confirmPassword.length >= 8 || formData.confirmPassword == "",
             onError: () => {
                 setError((error)=>({...error, confirmPassword: true}))
             }
@@ -110,13 +121,15 @@ export default function Register({}) {
             }
         })
         if(!isError){
-            const res = await registerUser(formData)
+            const res = await updateUserInfo({name: formData.name, email:formData.email, password:formData.password, newPassword: formData.confirmPassword})
             
             if(res.status == 200) {
                 alert(res.data.message)
-                navigate('/login')
+                setFormData({...formData, password:"", confirmPassword:""})
+                // navigate('/login')
             } else{
                 alert(res.message)
+                setFormData({...formData, password:"", confirmPassword:""})
             }
         } else {
             console.log(error)
@@ -125,24 +138,15 @@ export default function Register({}) {
 
     return (
         <div className={styles.container}>
-            <div className={styles.container1}>
-                <div className={styles.circleContainer}>
-                </div>
-                <img src={AstroImage} alt='Asto image' className={styles.imageStyle}/>
-                <p className={styles.imageBigText}>Welcome aboard my friend</p>
-                <p className={styles.imageSmallText}>just a couple of clicks and we start</p>
-            </div>
             <div className={styles.container2}>
-                <p className={styles.headerText}>Register</p>
+                <p className={styles.headerText}>Settings</p>
                 <Form 
                     formFields={formFields}
                     errorMessages={errorMessages}
                     error={error}
                     onSubmit={onSubmit}
-                    buttonText={"Register"}
+                    buttonText={"Update"}
                 />
-                <p className={styles.lightText}>Have an account ?</p>
-                <button className={styles.buttonStyle} onClick={() => navigate('/login')}>Login</button>
             </div>
         </div>
     )

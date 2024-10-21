@@ -73,6 +73,7 @@ export default function Login({}) {
             
             if(res.status == 200) {
                 alert(res.data.message)
+                localStorage.setItem('token', res.data.token)
                 navigate('/')
             } else{
                 alert(res.message)
