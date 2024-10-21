@@ -67,3 +67,32 @@
     position:absolute;
     top: 70%;
 }
+
+.headerText {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 3vw;
+    line-height: 4vw;
+    text-align: center;
+    color: #343434;
+}
+
+.lightText {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.5vw;
+    text-align: center;
+    color: #828282;
+}
+
+.buttonStyle {
+    background-color: #FFFFFF;
+    width: 30vw;
+    height: 35px;
+    border-radius: 10px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #17A2B8;
+    color: #17A2B8;
+    cursor: pointer;
+}
