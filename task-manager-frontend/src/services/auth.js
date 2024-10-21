@@ -4,6 +4,7 @@ import { addTokenToHeader, getIdFromToken } from "../helper/utils";
 export const registerUser = async (data) => {
   try {
     const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/user/register`, data);
+    console.log(res)
     return {
       status: res.status,
       message: res.data.message

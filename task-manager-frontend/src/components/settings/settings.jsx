@@ -1,9 +1,8 @@
-import styles from './auth.module.css'
-import AstroImage from '../../assets/astro.png'
+import styles from './settings.module.css'
 import { useEffect, useState } from 'react'
-import Form from '../../components/form/form'
+import Form from '../form/form'
 import { useNavigate } from 'react-router-dom'
-import { getUserInfo, registerUser, updateUserInfo } from '../../services/auth'
+import { getUserInfo, updateUserInfo } from '../../services/auth'
 import { validateEmail } from '../../helper/utils'
 
 export default function Settings({}) {

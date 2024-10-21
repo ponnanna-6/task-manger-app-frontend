@@ -113,7 +113,7 @@ export default function Register({}) {
             const res = await registerUser(formData)
             
             if(res.status == 200) {
-                alert(res.data.message)
+                alert(res.message)
                 navigate('/login')
             } else{
                 alert(res.message)

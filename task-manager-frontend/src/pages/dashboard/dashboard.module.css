@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+}
+
+.dashboardContainer {
+    display: flex;
+    width: 80vw;
+    height: 100vh;
+}

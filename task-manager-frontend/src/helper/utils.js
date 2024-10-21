@@ -27,3 +27,7 @@ export const getIdFromToken = () => {
         return false
     }
 }
+
+export const logOutUser = () => {
+    localStorage.removeItem('token')
+}
