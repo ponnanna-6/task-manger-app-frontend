@@ -29,14 +29,28 @@
     justify-content: space-evenly;
     width: auto;
     height: auto;
-    background-color: blue;
 }
 
 .taskCategory {
     display: flex;
     flex-direction: column;
-    width: 20vw;
-    height: 100px;
-    background-color: aliceblue;
+    width: 25vw;
+    height: 100vh;
+    background-color: #EEF2F5;
     margin: 1rem;
+    overflow-y: scroll;
+    border-radius: 5px;
+}
+
+.taskCategoryHeader {
+    display: flex;
+    flex-direction: row;
+    height: 5vh;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+.addIcon {
+    cursor: pointer;
 }
