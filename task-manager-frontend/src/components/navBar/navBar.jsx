@@ -6,9 +6,15 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IoLogOutOutline } from "react-icons/io5";
 import { logOutUser } from '../../helper/utils';
 import { useNavigate } from 'react-router-dom';
+import Popup from '../popup/popup';
+import { useState } from 'react';
 
 export default function NavBar({activeTab, setActiveTab}) {
     const navigate = useNavigate()
+    const [logoutPopup, setLogoutPopup] = useState(false);
+
+    const openPopup = () => setLogoutPopup(true);
+    const closePopup = () => setLogoutPopup(false);
 
     const options = [
         {   
@@ -36,6 +42,7 @@ export default function NavBar({activeTab, setActiveTab}) {
         logOutUser()
         navigate('/login')
     }
+
     return (
         <div className={styles.navBarContainer}>
             <div className={styles.appNameContainer}>
@@ -55,10 +62,18 @@ export default function NavBar({activeTab, setActiveTab}) {
                     <p>{option.name}</p>
                 </div>)
             })}
-            <div className={styles.logoutContainer} onClick={onLogoutClick}>
+            <div className={styles.logoutContainer} onClick={openPopup}>
                 <IoLogOutOutline className={styles.logoutIcon}/>
                 <p>Log Out</p>
             </div>
+            <Popup
+                onConfirm={onLogoutClick}
+                isOpen={logoutPopup}
+                onClose={closePopup}
+                message="Are you sure you want to Logout?"
+                cancelButtonText={"Cancel"}
+                confirmButtonText={"Yes, Logout"}
+            />
         </div>
     )
 }

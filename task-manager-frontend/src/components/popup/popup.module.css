@@ -1,0 +1,55 @@
+.popupOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it stays on top of other elements */
+}
+
+.popupContent {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 300px;
+}
+
+.popupText {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2vw;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    text-align: center;
+    color: black;
+}
+
+.closeButton {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: white;
+    color: red;
+    border: 1px solid red;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirmButton {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--light-blue);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.popupButtons {
+    display: flex;
+    flex-direction: column;
+}
