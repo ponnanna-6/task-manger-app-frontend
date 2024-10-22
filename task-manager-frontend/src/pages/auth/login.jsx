@@ -1,13 +1,20 @@
 import styles from './auth.module.css'
 import AstroImage from '../../assets/astro.png'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Form from '../../components/form/form'
 import { useNavigate } from 'react-router-dom'
-import { validateEmail } from '../../helper/utils'
+import { getIdFromToken, validateEmail } from '../../helper/utils'
 import { loginUser } from '../../services/auth'
 
 export default function Login({}) {
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if(getIdFromToken()) {
+            navigate('/')
+        }
+    }, [])
+
     const [formData, setFormData] = useState({
         email: "",
         password: ""
