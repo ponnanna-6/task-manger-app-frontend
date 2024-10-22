@@ -10,12 +10,9 @@ export const registerUser = async (data) => {
       message: res.data.message
     };
   } catch (error) {
-    if (error.response) {
-      console.log("Error Response:", error.response.data);
-    }
     return {
-      status: error.status,
-      message: error.response.data.message
+      status: error?.status ? error.status : 500,
+      message: error?.response?.data?.message ? error.response.data.message : "Something went wrong"
     };
   }
 };
@@ -23,17 +20,15 @@ export const registerUser = async (data) => {
 export const loginUser = async (data) => {
   try {
     const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/user/login`, data);
+    console.log(res)
     return {
       status: res?.status,
       data: res?.data
     };
   } catch (error) {
-    if (error.response) {
-      console.log("Error Response:", error.response.data);
-    }
     return {
-      status: error.status,
-      message: error.response.data.message
+      status: error?.status ? error.status : 500,
+      message: error?.response?.data?.message ? error.response.data.message : "Something went wrong"
     };
   }
 };

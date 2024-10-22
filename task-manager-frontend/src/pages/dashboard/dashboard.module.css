@@ -10,4 +10,5 @@
     height: 100vh;
     margin-left: 22vw; /* Shift the content to the right to avoid overlap */
     align-self: flex-end;
+    overflow-x: scroll;
 }
