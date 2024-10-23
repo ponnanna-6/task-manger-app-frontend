@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import styles from './taskPopUp.module.css';
 import { MdDelete } from "react-icons/md";
+import { addTaskToDb } from '../../services/tasks';
 
-export default function TaskPopUp({ isOpen, onClose}) {
+export default function TaskPopUp({ isOpen, onClose }) {
     if (!isOpen) return null;
 
     const [formData, setFormData] = useState({
         title: '',
         priority: '',
-        assignTo: '',
+        assignedTo: '',
         checklist: [],
         dueDate: ''
     });
@@ -29,10 +30,14 @@ export default function TaskPopUp({ isOpen, onClose}) {
         setFormData({ ...formData, checklist: updatedChecklist });
     };
 
-    const onSaveClick = () => {
-        console.log(formData)
+    const onSaveClick = async () => {
+        await addTaskToDb(formData).then((res) => {
+            if (res.status == "200") {
+                onClose();
+            }
+        })
     }
-    
+
     return (
         <div className={styles.popupOverlay}>
             <div className={styles.popupContent}>
@@ -67,8 +72,8 @@ export default function TaskPopUp({ isOpen, onClose}) {
                     <label className={styles.label}>Assign To&nbsp;</label>
                     <input
                         type="email"
-                        value={formData.assignTo}
-                        onChange={(e) => setFormData({ ...formData, assignTo: e.target.value })}
+                        value={formData.assignedTo}
+                        onChange={(e) => setFormData({ ...formData, assignedTo: e.target.value })}
                         placeholder="Add an assignee"
                     />
                 </div>

@@ -1,148 +1,148 @@
 .popupOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .popupContent {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 40vw;
-    height: 60vh;
-    max-width: 90%;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    overflow-y: scroll;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 40vw;
+  height: 60vh;
+  max-width: 90%;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-y: scroll;
 }
 
 .formGroupColumn {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
 }
 
 .formGroupRow {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 15px;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+  align-items: center;
 }
 
-.formGroupRow input[type="text"], 
-.formGroupRow input[type="email"], 
+.formGroupRow input[type="text"],
+.formGroupRow input[type="email"],
 .formGroupRow input[type="date"] {
-    width: 80%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    justify-content: center;
-    align-items: center;
+  width: 80%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  justify-content: center;
+  align-items: center;
 }
 
-.formGroupColumn input[type="text"], 
-.formGroupColumn input[type="email"], 
+.formGroupColumn input[type="text"],
+.formGroupColumn input[type="email"],
 .formGroupColumn input[type="date"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  justify-content: center;
+  align-items: center;
 }
 
 .dateInput {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .radioGroup {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 .radioGroup label {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .checklist {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 .checklist li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
 }
 
 .addChecklist {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .addChecklist input {
-    flex-grow: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  flex-grow: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .addChecklist button {
-    padding: 8px;
-    color: #767575;
-    border: none;
-    cursor: pointer;
-    background-color: transparent;
-    align-self: flex-start;
+  padding: 8px;
+  color: #767575;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  align-self: flex-start;
 }
 
 .deleteButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    color: red;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: red;
 }
 
 .popupButtons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15vh;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15vh;
 }
 
 .cancelButton {
-    border: 1px solid #CF3636;
-    color: #CF3636;
-    border-radius: 10px;
-    cursor: pointer;
-    width: 100px;
-    height: 30px;
+  border: 1px solid #cf3636;
+  color: #cf3636;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100px;
+  height: 30px;
 }
 
 .saveButton {
-    background-color: var(--light-blue);
-    border: none;
-    color: white;
-    border-radius: 10px;
-    cursor: pointer;
-    width: 100px;
-    height: 30px;
+  background-color: var(--light-blue);
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100px;
+  height: 30px;
 }
 
 .label {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: black;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: black;
 }

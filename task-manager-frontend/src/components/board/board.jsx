@@ -5,9 +5,33 @@ import { getTodaysDate } from '../../helper/utils'
 import { useNavigate } from 'react-router-dom'
 import { IoMdAdd } from "react-icons/io";
 import TaskPopUp from '../taskPopUp/taskPopUp'
+import { getUserTasks } from '../../services/tasks'
+import { TaskDisplay } from '../taskDisplayItem/taskDisplay'
 export default function Board ({}) {
-    const [userData, setUserData] = useState({})
+    const navigate = useNavigate()
+
     const [addtask, setAddtask] = useState(false)
+    const [allData, setAllData] = useState([])
+    const [backlogData, setBacklogData] = useState([])
+    const [todoData, setTodoData] = useState([])
+    const [inprogressData, setInprogressData] = useState([])
+    const [doneData, setDoneData] = useState([])
+    const [userData, setUserData] = useState([])
+
+    const mappingData = {
+        0: backlogData,
+        1: todoData,
+        2: inprogressData,
+        3: doneData
+    }
+
+    const nameMapping = {
+        0: 'BACKLOG',
+        1: 'TODO',
+        2: 'IN PROGRESS',
+        3: 'DONE'
+    }
+
 
     const boardDivisions = [
         {id: 0, name: 'Backlog'},
@@ -15,7 +39,7 @@ export default function Board ({}) {
         {id: 2, name: 'In Progress'},
         {id: 3, name: 'Done'},
     ]
-    const navigate = useNavigate()
+
     useEffect(() => {
         const getUserData = async() => {
             await getUserInfo().then((res) => {
@@ -27,7 +51,28 @@ export default function Board ({}) {
         }
         getUserData()
     }, [])
-    console.log(userData)
+
+
+    useEffect(() => {
+        const getData = async() => {
+            await getUserTasks().then((res) => {
+                if(res.status == "200") {
+                    setAllData(res.data)
+                }
+            }).catch(error => console.log(error))
+        }
+        getData()
+    }, [])
+
+    useEffect(() => {
+        if(allData) {
+            setBacklogData(allData.filter((item) => item.taskStatus == nameMapping[0]))
+            setTodoData(allData.filter((item) => item.taskStatus == nameMapping[1]))
+            setInprogressData(allData.filter((item) => item.taskStatus == nameMapping[2]))
+            setDoneData(allData.filter((item) => item.taskStatus == nameMapping[3]))
+        }
+    }, [allData])
+
     return (
         <div className={styles.container}>
             <div className={styles.boardHeader}>
@@ -44,6 +89,11 @@ export default function Board ({}) {
                         <div className={styles.taskCategoryHeader}>
                             <p>{item.name}</p>
                             {item.id == 1 && <IoMdAdd onClick={() => {setAddtask(true)}} className={styles.addIcon}/>}
+                        </div>
+                        <div className={styles.tasks}>
+                            {mappingData[item.id].map((task, index) => (
+                                <TaskDisplay key={index} task={task} />
+                            ))}
                         </div>
                     </div>
                 ))}
