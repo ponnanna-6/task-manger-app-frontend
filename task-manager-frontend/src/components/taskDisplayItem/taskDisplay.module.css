@@ -2,6 +2,123 @@
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 1rem;
+    padding: 0.5rem;
     margin: 1rem;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.header1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.priority {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.5vw;
+    font-weight: 600;
+    text-align: left;
+    color: black;
+    margin-top: -10px;
+}
+
+.dropDown {
+    z-index: 1000;
+}
+
+.dropDownDots {
+    cursor: pointer;
+}
+
+.title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: left;
+    color: black;
+    margin-top: -5px;
+}
+
+.footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dueDate {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.5vw;
+    font-weight: 600;
+    color: white;
+    border-radius: 5px;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+}
+
+.taskStatusDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.taskStatusItem {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.4rem;
+    font-weight: 500;
+    color: #767575;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #EEECEC;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+}
+
+.checklistName {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: black;
+}
+
+.checklistDropContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.checklistDropContainer div {
+    display: flex;
+    flex-direction: row;
+    color: #767575;
+    padding: 0.1rem;
+    width: 80%;
+    border-radius: 10px;
+    border: 1px solid #E2E2E2;
+}
+
+.checklistDropContainer p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 400;
+    color: black;
+}
+
+.checklistHeaderRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.arrowIcon {
+    cursor: pointer;
+    background-color: #EEECEC;
+    color: #767575;
+    border-radius: 0.1rem;
+    font-weight: 100;
 }

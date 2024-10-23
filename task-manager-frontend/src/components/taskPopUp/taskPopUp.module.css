@@ -11,6 +11,9 @@
 }
 
 .popupContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -118,23 +121,26 @@
 .popupButtons {
   display: flex;
   justify-content: space-between;
-  margin-top: 15vh;
+  align-items: center;
+  justify-self: flex-end;
 }
 
 .cancelButton {
   border: 1px solid #cf3636;
   color: #cf3636;
-  border-radius: 10px;
+  border-radius: 0.5rem;
   cursor: pointer;
   width: 100px;
   height: 30px;
+  margin-right: 0.2rem;
+  background-color: #fff;
 }
 
 .saveButton {
   background-color: var(--light-blue);
   border: none;
   color: white;
-  border-radius: 10px;
+  border-radius: 0.5rem;
   cursor: pointer;
   width: 100px;
   height: 30px;
@@ -145,4 +151,11 @@
   font-size: 14px;
   font-weight: 500;
   color: black;
+}
+
+.error {
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  color: red;
 }
