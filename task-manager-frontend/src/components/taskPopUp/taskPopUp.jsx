@@ -1,18 +1,20 @@
 import { useState } from "react";
 import styles from "./taskPopUp.module.css";
 import { MdDelete } from "react-icons/md";
-import { addTaskToDb } from "../../services/tasks";
+import { addTaskToDb, editTaskInDb } from "../../services/tasks";
 import { validateEmail } from "../../helper/utils";
 
-export default function TaskPopUp({ isOpen, onClose }) {
+export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRefreshData}) {
     if (!isOpen) return null;
 
     const [formData, setFormData] = useState({
-        title: "",
-        priority: "",
-        assignedTo: "",
-        checklist: [],
-        dueDate: "",
+        title: isEdit ? editTaskData.title : "",
+        priority: isEdit ? editTaskData.priority : "",
+        assignedTo: isEdit ? editTaskData.assignedTo : "",
+        checklist: isEdit ? editTaskData.checklist : [],
+        dueDate: isEdit && editTaskData.dueDate 
+            ? editTaskData.dueDate 
+            : "",
     });
 
     const [error, setError] = useState({
@@ -104,14 +106,29 @@ export default function TaskPopUp({ isOpen, onClose }) {
             return;
         }
 
-        // Continue saving the form data if no errors
-        console.log(formData);
-        // Uncomment and handle the DB logic here
-        // await addTaskToDb(formData).then((res) => {
-        //     if (res.status == "200") {
-        //         onClose();
-        //     }
-        // });
+        if (isEdit) {
+            await editTaskInDb(editTaskData?._id, formData).then((res) => {
+                if (res.status == "200") {
+                    alert('updated sucessfully')
+                    setRefreshData(true)
+                    onClose();
+                } else {
+                    alert("Could not update task")
+                    onClose();
+                }
+            });
+        } else {
+            await addTaskToDb(formData).then((res) => {
+                if (res.status == "200") {
+                    alert('added sucessfully')
+                    setRefreshData(true)
+                    onClose();
+                } else {
+                    alert("Could not add task")
+                    onClose();
+                }
+            });
+        }
     };
 
     const onChangeInput = (e, param) => {

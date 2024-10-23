@@ -5,7 +5,7 @@ import { getTodaysDate } from '../../helper/utils'
 import { useNavigate } from 'react-router-dom'
 import { IoMdAdd } from "react-icons/io";
 import TaskPopUp from '../taskPopUp/taskPopUp'
-import { getUserTasks } from '../../services/tasks'
+import { getTaskById, getUserTasks } from '../../services/tasks'
 import { TaskDisplay } from '../taskDisplayItem/taskDisplay'
 export default function Board ({}) {
     const navigate = useNavigate()
@@ -17,6 +17,9 @@ export default function Board ({}) {
     const [inprogressData, setInprogressData] = useState([])
     const [doneData, setDoneData] = useState([])
     const [userData, setUserData] = useState([])
+    const [isEdit, setIsEdit] = useState(false)
+    const [editTaskData, setEditTaskData] = useState({})
+    const [refreshData, setRefreshData] = useState(false)
 
     const mappingData = {
         0: backlogData,
@@ -60,9 +63,10 @@ export default function Board ({}) {
                     setAllData(res.data)
                 }
             }).catch(error => console.log(error))
+            setRefreshData(false)
         }
         getData()
-    }, [])
+    }, [refreshData])
 
     useEffect(() => {
         if(allData) {
@@ -72,6 +76,16 @@ export default function Board ({}) {
             setDoneData(allData.filter((item) => item.taskStatus == nameMapping[3]))
         }
     }, [allData])
+
+    const onEditTask = async(id) => {
+        await getTaskById(id).then((res) => {
+            if(res.status == "200") {
+                setEditTaskData(res.data)        
+                setIsEdit(true)
+                setAddtask(true)
+            }
+        }).catch(error => console.log(error))
+    }
 
     return (
         <div className={styles.container}>
@@ -92,7 +106,12 @@ export default function Board ({}) {
                         </div>
                         <div className={styles.tasks}>
                             {mappingData[item.id].map((task, index) => (
-                                <TaskDisplay key={index} task={task} />
+                                <TaskDisplay 
+                                    key={index}
+                                    task={task}
+                                    onEditTask={onEditTask}
+                                    setRefreshData={setRefreshData}
+                                />
                             ))}
                         </div>
                     </div>
@@ -100,11 +119,10 @@ export default function Board ({}) {
             </div>
             <TaskPopUp 
                 isOpen={addtask}
+                isEdit={isEdit}
                 onClose={() => {setAddtask(false)}}
-                onConfirm={() => {setAddtask(false)}}
-                message="Add Task"
-                cancelButtonText="Cancel"
-                confirmButtonText="Save"
+                editTaskData={editTaskData}
+                setRefreshData={setRefreshData}
             />
         </div>
     )

@@ -6,10 +6,32 @@ import { FaChevronUp } from "react-icons/fa";
 import { getDueData, isBeforeDueDate } from '../../helper/utils';
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
+import { updateTaskState } from '../../services/tasks';
 
-export function TaskDisplay({ task }) {
+export function TaskDisplay({ task, onEditTask, setRefreshData }) {
     const [showDropDown, setShowDropDown] = useState(false);
     const [showChecklist, setShowChecklist] = useState(false);
+
+    const updateState = async (state) => {
+        console.log(state,task?._id)
+        const res = await updateTaskState(task._id, state)
+        if (res.status == 200) {
+            setRefreshData(true)
+        } else{
+            alert("Could not update task")
+        }
+    }
+
+    const setDueDateColor = (dueDate) => {
+        if(task?.taskStatus === "DONE") {
+            return "green"
+        }
+        if (isBeforeDueDate(dueDate)) {
+            return "red"
+        } else {
+            return "grey"
+        }
+    }
 
     const colors = {
         "HIGH PRIORITY": "red",
@@ -20,15 +42,23 @@ export function TaskDisplay({ task }) {
     const dropDownOptions = {
         "Edit": {
             name: "Edit",
-            onClick: () => console.log("edit")
+            onClick: () => {
+                console.log(task._id)
+                onEditTask(task._id)
+                setShowDropDown(false)
+            }
         },
         "Delete": {
             name: "Delete",
-            onClick: () => console.log("delete")
+            onClick: () => {
+                setShowDropDown(false)
+            }
         },
         "Share": {
             name: "Share",
-            onClick: () => console.log("share")
+            onClick: () => {
+                setShowDropDown(false)
+            }
         }
     }
 
@@ -74,14 +104,14 @@ export function TaskDisplay({ task }) {
             </div>
             <div className={styles.footer}>
                 {task.dueDate &&
-                    <div className={styles.dueDate} style={{ backgroundColor: isBeforeDueDate(task?.dueDate) ? 'red' : 'grey' }}>
+                    <div className={styles.dueDate} style={{ backgroundColor: setDueDateColor(task?.dueDate)}}>
                         <p>{getDueData(task?.dueDate)}</p>
                     </div>
                 }
                 <div className={styles.taskStatusDiv}>
                     {taskStates.map((state, index) => (
                         state !== task?.taskStatus ? (
-                            <p key={index} className={styles.taskStatusItem}>{state}</p>
+                            <p key={index} className={styles.taskStatusItem} onClick={() => updateState(state)}>{state}</p>
                         ) : null
                     ))}
                 </div>
