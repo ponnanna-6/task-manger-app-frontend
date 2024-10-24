@@ -72,3 +72,13 @@ export function isBeforeDueDate(dueDate) {
         return false;
     }
 }
+
+export const writeShareLinkToClipboard = (id) => {
+    try {
+        const domain = window.location.host;
+        navigator.clipboard.writeText(`${domain}/public/task/${id}`)
+        return true
+    } catch (error) {
+        return false
+    }
+}

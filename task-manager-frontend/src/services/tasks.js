@@ -1,11 +1,11 @@
 import axios from "axios";
 import { addTokenToHeader, getIdFromToken } from "../helper/utils";
-export const getUserTasks = async () => {
+export const getUserTasks = async (filter) => {
     try {
         const headers = addTokenToHeader({ headers: {} })
         if (headers) {
             const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/task/user`,
-                { headers }
+                { headers, params: { filter } }
             );
             return {
                 status: res?.status,
@@ -85,16 +85,35 @@ export const editTaskInDb = async (id, data) => {
 export const updateTaskState = async (id, state) => {
     try {
         const headers = addTokenToHeader({ headers: {} })
-        const res = await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/task/status/${id}`, {taskStatus: state}, { headers });
+        const res = await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/task/status/${id}`, { taskStatus: state }, { headers });
         return {
             status: res?.status,
-            data: res?.data || {}       
+            data: res?.data || {}
         };
     } catch (error) {
-        console.log(error)  
+        console.log(error)
         return {
             status: error?.status ? error.status : 500,
             message: error?.response?.data?.message ? error.response.data.message : "Something went wrong"
-        };      
+        };
+    }
+}
+
+export const getPublicTask = async (id) => {
+    try {
+        const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v2/public/task/${id}`);
+        console.log(res.data)
+        return {
+            status: res?.status,
+            data: res?.data
+        };
+    } catch (error) {
+        if (error.response) {
+            console.log("Error Response:", error.response.data);
+        }
+        return {
+            status: error.status,
+            message: error.response.data.message
+        };
     }
 }
