@@ -20,6 +20,7 @@ export default function Board ({}) {
     const [isEdit, setIsEdit] = useState(false)
     const [editTaskData, setEditTaskData] = useState({})
     const [refreshData, setRefreshData] = useState(false)
+    const [filter, setFilter] = useState("week")
 
     const mappingData = {
         0: backlogData,
@@ -42,6 +43,27 @@ export default function Board ({}) {
         {id: 2, name: 'In Progress'},
         {id: 3, name: 'Done'},
     ]
+    useEffect(() => {
+        console.log("FILTER", filter)
+    }, [filter])
+
+    const filterMapping = {
+        "today": {
+            name: "Today",
+            onClick: () => { setFilter("today") },
+        },
+        "week": {
+            name: "This Week",
+            onClick: () => { setFilter("week") },    
+        },
+        "month": {
+            name: "This Month",
+            onClick: () => { 
+                console.log("MONTH")
+                setFilter("month")
+            },
+        }
+    }
 
     useEffect(() => {
         const getUserData = async() => {
@@ -58,15 +80,22 @@ export default function Board ({}) {
 
     useEffect(() => {
         const getData = async() => {
-            await getUserTasks().then((res) => {
+            await getUserTasks(filter).then((res) => {
                 if(res.status == "200") {
+                    //filter data by filter before setting
+                    if(filter == "today") {
+                        res.data = res.data.filter((item) => {
+                            let date = getTodaysDate()
+                            return item.dueDate == date
+                        })
+                    }
                     setAllData(res.data)
                 }
             }).catch(error => console.log(error))
             setRefreshData(false)
         }
         getData()
-    }, [refreshData])
+    }, [refreshData, filter])
 
     useEffect(() => {
         if(allData) {
@@ -95,7 +124,11 @@ export default function Board ({}) {
             </div>
             <div className={styles.boardHeader}>
                 <p className={styles.headerText}>Board</p>
-                <p onClick={() => {setAddtask(true)}}>This week</p>
+                <select className={styles.filterContainer} value={filter} onChange={(e) => filterMapping[e.target.value].onClick()}>
+                    {Object.keys(filterMapping).map((key, index) => 
+                        <option key={index} value={key}>{filterMapping[key].name}</option>)
+                    }
+                </select>
             </div>
             <div className={styles.tasksContainer}>
                 {boardDivisions.map((item, index) => (

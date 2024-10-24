@@ -1,6 +1,6 @@
 import './App.css'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import {Login, Register, Dashboard} from './pages'
+import {Login, Register, Dashboard, PublicTask} from './pages'
 
 function App() {
 
@@ -10,6 +10,7 @@ function App() {
         <Route path='/register' element={<Register/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/' element={<Dashboard/>}/>
+        <Route path="/public/task/:id" element={<PublicTask/>}/>
       </Routes>
     </BrowserRouter>
   )
