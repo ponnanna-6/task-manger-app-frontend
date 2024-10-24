@@ -7,6 +7,8 @@ import { IoMdAdd } from "react-icons/io";
 import TaskPopUp from '../taskPopUp/taskPopUp'
 import { getTaskById, getUserTasks } from '../../services/tasks'
 import { TaskDisplay } from '../taskDisplayItem/taskDisplay'
+import { PiUsers } from "react-icons/pi";
+import Popup from '../popup/popup'
 export default function Board ({}) {
     const navigate = useNavigate()
 
@@ -21,6 +23,7 @@ export default function Board ({}) {
     const [editTaskData, setEditTaskData] = useState({})
     const [refreshData, setRefreshData] = useState(false)
     const [filter, setFilter] = useState("week")
+    const [showAddPopUp, setShowAddPopUp] = useState(false)
 
     const mappingData = {
         0: backlogData,
@@ -116,6 +119,11 @@ export default function Board ({}) {
         }).catch(error => console.log(error))
     }
 
+    const addPeopleToBoard = (email) => {
+        setShowAddPopUp(false)
+        console.log("Add People: ", email)
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.boardHeader}>
@@ -124,6 +132,10 @@ export default function Board ({}) {
             </div>
             <div className={styles.boardHeader}>
                 <p className={styles.headerText}>Board</p>
+                <PiUsers 
+                    style={{fontSize: "20px", marginRight: "10px", cursor: "pointer"}}
+                    onClick={() => {setShowAddPopUp(true)}}
+                />
                 <select className={styles.filterContainer} value={filter} onChange={(e) => filterMapping[e.target.value].onClick()}>
                     {Object.keys(filterMapping).map((key, index) => 
                         <option key={index} value={key}>{filterMapping[key].name}</option>)
@@ -157,6 +169,15 @@ export default function Board ({}) {
                 editTaskData={editTaskData}
                 setRefreshData={setRefreshData}
             />
+            {showAddPopUp && <Popup 
+                from={"addPeople"}
+                isOpen={showAddPopUp}
+                onClose={() => setShowAddPopUp(false)}
+                message={"Add people to the board"}
+                cancelButtonText={"Cancel"}
+                confirmButtonText={"Add"}
+                onConfirm={addPeopleToBoard}
+            />}
         </div>
     )
 }
