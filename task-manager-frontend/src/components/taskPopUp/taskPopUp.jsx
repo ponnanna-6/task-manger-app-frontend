@@ -4,7 +4,7 @@ import { MdDelete } from "react-icons/md";
 import { addTaskToDb, editTaskInDb } from "../../services/tasks";
 import { validateEmail } from "../../helper/utils";
 
-export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRefreshData}) {
+export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRefreshData }) {
     if (!isOpen) return null;
 
     const [formData, setFormData] = useState({
@@ -12,8 +12,8 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
         priority: isEdit ? editTaskData.priority : "",
         assignedTo: isEdit ? editTaskData.assignedTo : "",
         checklist: isEdit ? editTaskData.checklist : [],
-        dueDate: isEdit && editTaskData.dueDate 
-            ? editTaskData.dueDate 
+        dueDate: isEdit && editTaskData.dueDate
+            ? editTaskData.dueDate
             : "",
     });
 
@@ -25,7 +25,20 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
         checklist: false,
     });
 
-    const [currentError, setCurrentError] = useState({name: "", message: ""});
+    const getColor = (priority) => {
+        switch (priority) {
+            case 0:
+                return "red";
+            case 1:
+                return "yellow";
+            case 2:
+                return "green";
+            default:
+                return "black";
+        }
+    };
+
+    const [currentError, setCurrentError] = useState({ name: "", message: "" });
 
     const errorFormData = {
         title: {
@@ -70,7 +83,7 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
 
     const handleAddChecklistItem = () => {
         setError({ ...error, checklist: false });
-        setCurrentError({name: "", message: ""});
+        setCurrentError({ name: "", message: "" });
         setShowChecklistInput(true);
         if (newChecklistItem.trim() !== "") {
             setFormData({
@@ -96,7 +109,7 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
                 updatedError[key] = true;
                 isError = true;
                 console.log(key)
-                setCurrentError({name: key, message: errorFormData[key].message})
+                setCurrentError({ name: key, message: errorFormData[key].message })
             }
         });
 
@@ -133,116 +146,125 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
 
     const onChangeInput = (e, param) => {
         setFormData({ ...formData, [param]: e.target.value });
-        setCurrentError({name: "", message: ""});
+        setCurrentError({ name: "", message: "" });
     };
 
     return (
         <div className={styles.popupOverlay}>
-            <div className={styles.popupContent}>
-                <div className={styles.formGroupColumn}>
-                    <label className={styles.label}>
-                        Title&nbsp;<span style={{ color: "red" }}>*</span>
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.title}
-                        onChange={(e) => onChangeInput(e, "title")}
-                        placeholder="Enter Task Title"
-                    />
-                </div>
-                
-                {currentError?.name == "title" && <div className={styles.error}>{currentError?.message}</div>}
+            <div className={styles.popupContentOuter}>
+                <div className={styles.popupContent}>
+                    <div className={styles.formGroupColumn}>
+                        <label className={styles.label}>
+                            Title&nbsp;<span style={{ color: "red" }}>*</span>
+                        </label>
+                        <input
+                            type="text"
+                            value={formData.title}
+                            onChange={(e) => onChangeInput(e, "title")}
+                            placeholder="Enter Task Title"
+                        />
+                    </div>
 
-                <div className={styles.formGroupRow}>
-                    <label className={styles.label}>
-                        Select Priority&nbsp;<span style={{ color: "red" }}>*</span>
-                    </label>
-                    <div className={styles.radioGroup}>
-                        {["HIGH PRIORITY", "MODERATE PRIORITY", "LOW PRIORITY"].map(
-                            (priority, index) => (
-                                <label key={index}>
+                    {currentError?.name == "title" && <div className={styles.error}>{currentError?.message}</div>}
+
+                    <div className={styles.formGroupRow}>
+                        <label className={styles.label}>
+                            Select Priority&nbsp;<span style={{ color: "red" }}>*</span>
+                        </label>
+                        <div className={styles.radioGroup}>
+                            {["HIGH PRIORITY", "MODERATE PRIORITY", "LOW PRIORITY"].map((priority, index) => (
+                                <label
+                                    key={index}
+                                    className={styles.radioContainer}
+                                    style={formData.priority === priority ? { backgroundColor: "#EEECEC" } : {}}
+                                >
                                     <input
                                         type="radio"
                                         value={priority}
                                         checked={formData.priority === priority}
                                         onChange={(e) => onChangeInput(e, "priority")}
                                     />
-                                    {priority}
+                                    <span className={styles.checkmark} style={{backgroundColor: getColor(index)}}>&nbsp;</span>
+                                    <span className={styles.radioText}>{priority}</span>
                                 </label>
-                            )
-                        )}
+                            ))}
+                        </div>
                     </div>
-                </div>
-                
-                {currentError?.name == "priority" && <div className={styles.error}>{currentError?.message}</div>}
 
-                <div className={styles.formGroupRow}>
-                    <label className={styles.label}>Assign To&nbsp;</label>
-                    <input
-                        type="email"
-                        value={formData.assignedTo}
-                        onChange={(e) => onChangeInput(e, "assignedTo")}
-                        placeholder="Add an assignee"
-                    />
-                </div>
-                
-                {currentError?.name == "assignedTo" && <div className={styles.error}>{currentError?.message}</div>}
 
-                <div className={styles.formGroup}>
-                    <label className={styles.label}>
-                        Checklist&nbsp;<span style={{ color: "red" }}>*</span>
-                    </label>
-                    <ul className={styles.checklist}>
-                        {formData.checklist.map((item, index) => (
-                            <li key={index}>
-                                <input type="checkbox" />
-                                {item}
-                                <MdDelete
-                                    className={styles.deleteButton}
-                                    onClick={() => handleRemoveChecklistItem(index)}
-                                />
-                            </li>
-                        ))}
-                    </ul>
+                    {currentError?.name == "priority" && <div className={styles.error}>{currentError?.message}</div>}
 
-                    <div className={styles.addChecklist}>
-                        {showChecklistInput && (
-                            <input
-                                type="text"
-                                value={newChecklistItem}
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                        handleAddChecklistItem();
-                                    }
-                                }}
-                                onChange={(e) => setNewChecklistItem(e.target.value)}
-                                placeholder="Add New Item"
-                            />
-                        )}
-                        <button onClick={handleAddChecklistItem}>+ Add New</button>
-                    </div>
-                </div>
-                
-                {currentError?.name == "checklist" && <div className={styles.error}>{currentError?.message}</div>}
-
-                <div className={styles.popupButtons}>
                     <div className={styles.formGroupRow}>
+                        <label className={styles.label}>Assign To&nbsp;</label>
                         <input
-                            type={"date"}
-                            value={formData.dueDate}
-                            onChange={(e) => onChangeInput(e, "dueDate")}
-                            placeholder="Select due date"
-                            className={styles.dateInput}
+                            type="email"
+                            value={formData.assignedTo}
+                            onChange={(e) => onChangeInput(e, "assignedTo")}
+                            placeholder="Add an assignee"
                         />
                     </div>
 
-                    <div style={{gap: "10px"}}>
-                        <button onClick={onClose} className={styles.cancelButton}>
-                            Cancel
-                        </button>
-                        <button onClick={onSaveClick} className={styles.saveButton}>
-                            Save
-                        </button>
+                    {currentError?.name == "assignedTo" && <div className={styles.error}>{currentError?.message}</div>}
+
+                    <div className={styles.formGroupColumn}>
+                        <label className={styles.label}>
+                            {`Checklist (0/${formData.checklist.length})`}<span style={{ color: "red" }}>*</span>
+                        </label>
+                        <ul className={styles.checklist}>
+                            {formData.checklist.map((item, index) => (
+                                <li key={index}>
+                                    <span>
+                                        <input type="checkbox" />
+                                        {item}
+                                    </span>
+                                    
+                                    <MdDelete
+                                        className={styles.deleteButton}
+                                        onClick={() => handleRemoveChecklistItem(index)}
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+
+                        <div className={styles.addChecklist}>
+                            {showChecklistInput && (
+                                <input
+                                    type="text"
+                                    value={newChecklistItem}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            handleAddChecklistItem();
+                                        }
+                                    }}
+                                    onChange={(e) => setNewChecklistItem(e.target.value)}
+                                    placeholder="Add New Item"
+                                />
+                            )}
+                            <button onClick={handleAddChecklistItem}>+ Add New</button>
+                        </div>
+                    </div>
+
+                    {currentError?.name == "checklist" && <div className={styles.error}>{currentError?.message}</div>}
+
+                    <div className={styles.popupButtons}>
+                        <div className={styles.formGroupRow}>
+                            <input
+                                type={"date"}
+                                value={formData.dueDate}
+                                onChange={(e) => onChangeInput(e, "dueDate")}
+                                placeholder="Select due date"
+                                className={styles.dateInput}
+                            />
+                        </div>
+
+                        <div style={{ gap: "10px" }}>
+                            <button onClick={onClose} className={styles.cancelButton}>
+                                Cancel
+                            </button>
+                            <button onClick={onSaveClick} className={styles.saveButton}>
+                                Save
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

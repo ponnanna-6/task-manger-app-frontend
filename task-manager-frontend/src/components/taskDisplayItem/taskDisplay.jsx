@@ -27,7 +27,7 @@ export function TaskDisplay({ task, onEditTask, setRefreshData, isPublic }) {
             return "green"
         }
         if (isBeforeDueDate(dueDate)) {
-            return "red"
+            return "#CF3636"
         } else {
             return "grey"
         }
@@ -78,7 +78,7 @@ export function TaskDisplay({ task, onEditTask, setRefreshData, isPublic }) {
     return (
         <div
             className={styles.taskContainer}
-            style={isPublic ? { width: '100%'} : {}}
+            style={isPublic ? { width: '100%', maxHeight: '80%', overflow: 'auto' } : {}}
         >
             <div className={styles.header1}>
                 <p className={styles.priority}><span style={{ color: colors[task?.priority], fontSize: '2vw' }}>.</span>{task?.priority}<span>&nbsp;&nbsp;&nbsp;&nbsp;{task?.assignedTo?.charAt(0).toUpperCase()}</span></p>
@@ -96,7 +96,7 @@ export function TaskDisplay({ task, onEditTask, setRefreshData, isPublic }) {
             <p className={styles.title}>{task.title}</p>
             <div>
                 <div className={styles.checklistHeaderRow}>
-                    <p className={styles.checklistName}>{`CheckList (${task?.checklist?.length})`}</p>
+                    <p className={styles.checklistName}>{`CheckList (0/${task?.checklist?.length})`}</p>
                     {!isPublic && (
                         showChecklist
                             ? <IoIosArrowUp className={styles.arrowIcon} onClick={() => setShowChecklist(!showChecklist)} />
@@ -104,11 +104,11 @@ export function TaskDisplay({ task, onEditTask, setRefreshData, isPublic }) {
                     )}
                 </div>
                 {(showChecklist || isPublic) &&
-                    <div className={styles.checklistDropContainer} style={isPublic ? { width: '100%', overflowY: "scroll" } : {}}>
+                    <div className={styles.checklistDropContainer} style={isPublic ? { width: '100%'} : {}}>
                         {task?.checklist?.map((item, index) => (
-                            <div>
+                            <div className={styles.checklistItemContainer}>
                                 <input type="checkbox" />
-                                <p>{item}</p>
+                                <p >{item}</p>
                             </div>
                         ))}
                     </div>
@@ -124,7 +124,9 @@ export function TaskDisplay({ task, onEditTask, setRefreshData, isPublic }) {
                     <div className={styles.taskStatusDiv}>
                         {taskStates.map((state, index) => (
                             state !== task?.taskStatus ? (
-                                <p key={index} className={styles.taskStatusItem} onClick={() => updateState(state)}>{state}</p>
+                                <div className={styles.taskStatusItem}>
+                                    <p key={index} onClick={() => updateState(state)}>{state}</p>
+                                </div>
                             ) : null
                         ))}
                     </div>
