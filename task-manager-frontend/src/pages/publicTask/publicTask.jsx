@@ -16,10 +16,15 @@ export default function PublicTask({}) {
     useEffect(() => {
         const getData = async() => {
             await getPublicTask(id).then((res) => {
-                setTask(res.data)
-                setIsLoading(false)
+                if(res.status == "200") {
+                    setTask(res.data)
+                } else {
+                    alert(res.message)
+                }
             }).catch((err) => {
-                alert(err)
+                console.log(err)
+            }).finally(() => {
+                setIsLoading(false)
             })
         }
 
