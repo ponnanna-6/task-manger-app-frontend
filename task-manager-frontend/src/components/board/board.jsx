@@ -164,7 +164,15 @@ export default function Board ({}) {
                     <div key={index} className={styles.taskCategory}>
                         <div className={styles.taskCategoryHeader}>
                             <p>{item.name}</p>
-                            {item.id == 1 && <IoMdAdd onClick={() => {setAddtask(true)}} className={styles.addIcon}/>}
+                            {item.id == 1 && 
+                                <IoMdAdd 
+                                    onClick={() => {
+                                        setAddtask(true)
+                                        setIsEdit(false)
+                                    }}
+                                    className={styles.addIcon}
+                                />
+                            }
                         </div>
                         <div className={styles.tasks}>
                             {mappingData[item.id].map((task, index) => (
