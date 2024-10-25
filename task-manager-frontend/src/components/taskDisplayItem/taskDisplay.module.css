@@ -39,7 +39,17 @@
     text-align: left;
     color: black;
     margin-top: -5px;
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis ;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
+
+.title:hover {
+    overflow: visible;
+  }
 
 .footer {
     display: flex;

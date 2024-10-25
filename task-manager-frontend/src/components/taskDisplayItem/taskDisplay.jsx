@@ -103,7 +103,12 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                 {!isPublic && <SlOptions className={styles.dropDownDots} onClick={() => setShowDropDown(!showDropDown)} />}
 
             </div>
-            <p className={styles.title}>{task.title}</p>
+            <p
+                className={styles.title} 
+            >
+                {task.title}
+            </p>
+
             <div>
                 <div className={styles.checklistHeaderRow}>
                     <p className={styles.checklistName}>{`Checklist (${task?.checklist?.filter(item => item.checked).length}/${task.checklist.length})`}</p>
