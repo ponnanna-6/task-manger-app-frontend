@@ -30,6 +30,7 @@ export const getIdFromToken = () => {
 
 export const logOutUser = () => {
     localStorage.removeItem('token')
+    window.location.reload()
 }
 
 export const getTodaysDate = () => {

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Form from '../form/form'
 import { useNavigate } from 'react-router-dom'
 import { getUserInfo, updateUserInfo } from '../../services/auth'
-import { validateEmail } from '../../helper/utils'
+import { logOutUser, validateEmail } from '../../helper/utils'
 
 export default function Settings({}) {
     const navigate = useNavigate()
@@ -125,7 +125,7 @@ export default function Settings({}) {
             if(res.status == 200) {
                 alert(res.data.message)
                 setFormData({...formData, password:"", confirmPassword:""})
-                // navigate('/login')
+                logOutUser()
             } else{
                 alert(res.message)
                 setFormData({...formData, password:"", confirmPassword:""})

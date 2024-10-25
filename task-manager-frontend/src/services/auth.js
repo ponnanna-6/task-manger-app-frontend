@@ -61,7 +61,7 @@ export const updateUserInfo = async (data) => {
   try {
     const id = getIdFromToken()
     const headers = addTokenToHeader({headers:{}})
-    const res = await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/user/update/${id}`, data, {headers});
+    const res = await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/user/update`, data, {headers});
     return {
       status: res?.status,
       data: res?.data
