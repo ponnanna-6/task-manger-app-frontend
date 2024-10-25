@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "./taskPopUp.module.css";
 import { MdDelete } from "react-icons/md";
 import { addTaskToDb, editTaskInDb } from "../../services/tasks";
-import { validateEmail } from "../../helper/utils";
+import { formatDate, validateEmail } from "../../helper/utils";
 
 export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRefreshData }) {
     if (!isOpen) return null;
@@ -264,13 +264,15 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
                     {currentError?.name == "checklist" && <div className={styles.error}>{currentError?.message}</div>}
 
                     <div className={styles.popupButtons}>
-                        <div className={styles.formGroupRow}>
+                        <div className={styles.formGroupRow} onClick={() => document.getElementById('date-input').showPicker()}>
                             <input
+                                id="date-input"
                                 type={"date"}
-                                value={formData.dueDate}
+                                value={formData.dueDate ? formatDate(formData.dueDate) : "Select due date"}
                                 onChange={(e) => onChangeInput(e, "dueDate")}
                                 placeholder="Select due date"
                                 className={styles.dateInput}
+                                style={{color: '#707070', backgroundImage: 'none'}}
                             />
                         </div>
 

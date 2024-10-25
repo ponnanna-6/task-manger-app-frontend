@@ -52,8 +52,7 @@
 }
 
 .formGroupRow input[type="text"],
-.formGroupRow input[type="email"],
-.formGroupRow input[type="date"] {
+.formGroupRow input[type="email"]{
   font-family: "Inter";
   width: 80%;
   padding: 8px;
@@ -67,8 +66,7 @@
 }
 
 .formGroupColumn input[type="text"],
-.formGroupColumn input[type="email"],
-.formGroupColumn input[type="date"] {
+.formGroupColumn input[type="email"]{
   font-family: "Inter";
   width: 100%;
   padding: 8px;
@@ -82,8 +80,21 @@
 
 .dateInput {
   border: 1px solid #ccc;
-  border-radius: 4px;
+  font-family: "Poppins";
+  width: 100px;
+  height: 30px;
+  border: 1px solid #E2E2E2;
+  border-radius: 0.5rem;
+  font-size: 14px;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
+  padding-left: 1rem;
+}
+
+.dateInput::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
 }
 
 .radioGroup {
