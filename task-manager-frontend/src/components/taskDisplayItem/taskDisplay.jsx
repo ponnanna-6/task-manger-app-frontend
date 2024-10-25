@@ -6,14 +6,13 @@ import { FaChevronUp } from "react-icons/fa";
 import { getDueData, isBeforeDueDate, writeShareLinkToClipboard } from '../../helper/utils';
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
-import { updateTaskState } from '../../services/tasks';
+import { updateCheckListStatus, updateTaskState } from '../../services/tasks';
 
 export function TaskDisplay({ task, onEditTask, setRefreshData, isPublic }) {
     const [showDropDown, setShowDropDown] = useState(false);
     const [showChecklist, setShowChecklist] = useState(false);
 
     const updateState = async (state) => {
-        console.log(state, task?._id)
         const res = await updateTaskState(task._id, state)
         if (res.status == 200) {
             setRefreshData(true)
@@ -21,7 +20,6 @@ export function TaskDisplay({ task, onEditTask, setRefreshData, isPublic }) {
             alert("Could not update task")
         }
     }
-
     const setDueDateColor = (dueDate) => {
         if (task?.taskStatus === "DONE") {
             return "green"
@@ -74,6 +72,18 @@ export function TaskDisplay({ task, onEditTask, setRefreshData, isPublic }) {
         "IN PROGRESS",
         "DONE"
     ]
+    const toggleChecklistItem = async(index) => {
+        const updatedChecklist = task.checklist.map((item, i) => 
+            i === index ? { ...item, checked: !item.checked } : item
+        );
+
+        const res = await updateCheckListStatus(task._id, updatedChecklist)
+        if (res.status == 200) {
+            setRefreshData(true)
+        } else {
+            alert("Could not update task")
+        }
+    };
 
     return (
         <div
@@ -96,7 +106,7 @@ export function TaskDisplay({ task, onEditTask, setRefreshData, isPublic }) {
             <p className={styles.title}>{task.title}</p>
             <div>
                 <div className={styles.checklistHeaderRow}>
-                    <p className={styles.checklistName}>{`CheckList (0/${task?.checklist?.length})`}</p>
+                    <p className={styles.checklistName}>{`Checklist (${task?.checklist?.filter(item => item.checked).length}/${task.checklist.length})`}</p>
                     {!isPublic && (
                         showChecklist
                             ? <IoIosArrowUp className={styles.arrowIcon} onClick={() => setShowChecklist(!showChecklist)} />
@@ -106,9 +116,13 @@ export function TaskDisplay({ task, onEditTask, setRefreshData, isPublic }) {
                 {(showChecklist || isPublic) &&
                     <div className={styles.checklistDropContainer} style={isPublic ? { width: '100%'} : {}}>
                         {task?.checklist?.map((item, index) => (
-                            <div className={styles.checklistItemContainer}>
-                                <input type="checkbox" />
-                                <p >{item}</p>
+                            <div key={index} className={styles.checklistItemContainer}>
+                                <input 
+                                    type="checkbox"
+                                    checked={item.checked}
+                                    onChange={() => !isPublic && toggleChecklistItem(index)}    
+                                />
+                                <p>{item.message}</p>
                             </div>
                         ))}
                     </div>

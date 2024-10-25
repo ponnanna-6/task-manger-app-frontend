@@ -99,10 +99,27 @@ export const updateTaskState = async (id, state) => {
     }
 }
 
+//update task state
+export const updateCheckListStatus = async (id, checklist) => {
+    try {
+        const headers = addTokenToHeader({ headers: {} })
+        const res = await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/task/checklist/${id}`, { checklist: checklist}, { headers });
+        return {
+            status: res?.status,
+            data: res?.data || {}
+        };
+    } catch (error) {
+        console.log(error)
+        return {
+            status: error?.status ? error.status : 500,
+            message: error?.response?.data?.message ? error.response.data.message : "Something went wrong"
+        };
+    }
+}
+
 export const getPublicTask = async (id) => {
     try {
         const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v2/public/task/${id}`);
-        console.log(res.data)
         return {
             status: res?.status,
             data: res?.data

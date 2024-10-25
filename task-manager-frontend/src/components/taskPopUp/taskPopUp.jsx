@@ -78,24 +78,37 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
         },
     };
 
-    const [newChecklistItem, setNewChecklistItem] = useState("");
+    const [newChecklistItem, setNewChecklistItem] = useState({
+        checked: false,
+        message: ""
+    });
     const [showChecklistInput, setShowChecklistInput] = useState(false);
 
     const handleAddChecklistItem = () => {
         setError({ ...error, checklist: false });
         setCurrentError({ name: "", message: "" });
         setShowChecklistInput(true);
-        if (newChecklistItem.trim() !== "") {
+        if (newChecklistItem.message.trim() !== "") {
             setFormData({
                 ...formData,
                 checklist: [...formData.checklist, newChecklistItem],
             });
-            setNewChecklistItem("");
+            setNewChecklistItem({
+                checked: false,
+                message: ""
+            });
         }
     };
 
     const handleRemoveChecklistItem = (index) => {
         const updatedChecklist = formData.checklist.filter((_, i) => i !== index);
+        setFormData({ ...formData, checklist: updatedChecklist });
+    };
+
+    const toggleChecklistItem = (index) => {
+        const updatedChecklist = formData.checklist.map((item, i) => 
+            i === index ? { ...item, checked: !item.checked } : item
+        );
         setFormData({ ...formData, checklist: updatedChecklist });
     };
 
@@ -208,14 +221,18 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
 
                     <div className={styles.formGroupColumn}>
                         <label className={styles.label}>
-                            {`Checklist (0/${formData.checklist.length})`}<span style={{ color: "red" }}>*</span>
+                            {`Checklist (${formData.checklist.filter(item => item.checked).length}/${formData.checklist.length})`}<span style={{ color: "red" }}>*</span>
                         </label>
                         <ul className={styles.checklist}>
                             {formData.checklist.map((item, index) => (
                                 <li key={index}>
                                     <span>
-                                        <input type="checkbox" />
-                                        {item}
+                                        <input 
+                                            type="checkbox"
+                                            checked={item.checked}
+                                            onChange={() => toggleChecklistItem(index)}
+                                        />
+                                        {item.message}
                                     </span>
                                     
                                     <MdDelete
@@ -230,13 +247,13 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
                             {showChecklistInput && (
                                 <input
                                     type="text"
-                                    value={newChecklistItem}
+                                    value={newChecklistItem?.message}
                                     onKeyDown={(e) => {
                                         if (e.key === "Enter") {
                                             handleAddChecklistItem();
                                         }
                                     }}
-                                    onChange={(e) => setNewChecklistItem(e.target.value)}
+                                    onChange={(e) => setNewChecklistItem({...newChecklistItem, message: e.target.value})}
                                     placeholder="Add New Item"
                                 />
                             )}

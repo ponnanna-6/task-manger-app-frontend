@@ -9,17 +9,17 @@ import { getPublicTask } from '../../services/tasks'
 import { TaskDisplay } from '../../components/taskDisplayItem/taskDisplay'
 
 export default function PublicTask({}) {
-    const navigate = useNavigate()
     const { id } = useParams();
     const [task, setTask] = useState({})
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         const getData = async() => {
             await getPublicTask(id).then((res) => {
                 setTask(res.data)
-                console.log(res)
+                setIsLoading(false)
             }).catch((err) => {
-                console.log(err)
+                alert(err)
             })
         }
 
@@ -28,7 +28,7 @@ export default function PublicTask({}) {
 
     return (
         <div className={styles.container}>
-            <TaskDisplay task={task} isPublic={true}/>
+            {!isLoading && <TaskDisplay task={task} isPublic={true}/>}
         </div>
     )
 }

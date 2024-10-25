@@ -10,7 +10,7 @@ function App() {
         <Route path='/register' element={<Register/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/' element={<Dashboard/>}/>
-        <Route path="/public/task/:id" element={<PublicTask/>}/>
+        <Route path="/share/task/:id" element={<PublicTask/>}/>
       </Routes>
     </BrowserRouter>
   )
