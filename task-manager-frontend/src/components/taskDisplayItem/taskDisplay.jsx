@@ -8,7 +8,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { updateCheckListStatus, updateTaskState } from '../../services/tasks';
 
-export function TaskDisplay({ task, onEditTask, setRefreshData, isPublic }) {
+export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPublic }) {
     const [showDropDown, setShowDropDown] = useState(false);
     const [showChecklist, setShowChecklist] = useState(false);
 
@@ -41,7 +41,6 @@ export function TaskDisplay({ task, onEditTask, setRefreshData, isPublic }) {
         "Edit": {
             name: "Edit",
             onClick: () => {
-                console.log(task._id)
                 onEditTask(task._id)
                 setShowDropDown(false)
             }
@@ -50,6 +49,7 @@ export function TaskDisplay({ task, onEditTask, setRefreshData, isPublic }) {
             name: "Delete",
             onClick: () => {
                 setShowDropDown(false)
+                deleteTask(task._id)
             }
         },
         "Share": {

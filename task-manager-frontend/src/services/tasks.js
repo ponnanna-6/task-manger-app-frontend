@@ -134,3 +134,22 @@ export const getPublicTask = async (id) => {
         };
     }
 }
+
+export const deleteTaskById = async (id) => {
+    try {
+        const headers = addTokenToHeader({ headers: {} })
+        const res = await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/v1/task/delete/${id}`, { headers });
+        return {
+            status: res?.status,
+            data: res?.data
+        };
+    } catch (error) {
+        if (error.response) {
+            console.log("Error Response:", error.response.data);
+        }
+        return {
+            status: error.status,
+            message: error.response.data.message
+        };
+    }
+}

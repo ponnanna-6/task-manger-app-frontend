@@ -5,7 +5,7 @@ import { getTodaysDate } from '../../helper/utils'
 import { useNavigate } from 'react-router-dom'
 import { IoMdAdd } from "react-icons/io";
 import TaskPopUp from '../taskPopUp/taskPopUp'
-import { getTaskById, getUserTasks } from '../../services/tasks'
+import { deleteTaskById, getTaskById, getUserTasks } from '../../services/tasks'
 import { TaskDisplay } from '../taskDisplayItem/taskDisplay'
 import { PiUsers } from "react-icons/pi";
 import Popup from '../popup/popup'
@@ -120,6 +120,15 @@ export default function Board ({}) {
         }).catch(error => console.log(error))
     }
 
+    const deleteTask = async(id) => {
+        await deleteTaskById(id).then((res) => {
+            if(res.status == "200") {
+                setRefreshData(true)
+                alert("Task deleted successfully")
+            }
+        }).catch(error => console.log(error))
+    }
+
     const addPeopleToBoard = async(email) => {
         await shareBoard(email).then((res) => {
             console.log(res)
@@ -163,6 +172,7 @@ export default function Board ({}) {
                                     key={index}
                                     task={task}
                                     onEditTask={onEditTask}
+                                    deleteTask={deleteTask}
                                     setRefreshData={setRefreshData}
                                 />
                             ))}
