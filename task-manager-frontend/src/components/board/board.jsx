@@ -9,6 +9,7 @@ import { getTaskById, getUserTasks } from '../../services/tasks'
 import { TaskDisplay } from '../taskDisplayItem/taskDisplay'
 import { PiUsers } from "react-icons/pi";
 import Popup from '../popup/popup'
+import { shareBoard } from '../../services/acess'
 export default function Board ({}) {
     const navigate = useNavigate()
 
@@ -119,9 +120,16 @@ export default function Board ({}) {
         }).catch(error => console.log(error))
     }
 
-    const addPeopleToBoard = (email) => {
-        setShowAddPopUp(false)
-        console.log("Add People: ", email)
+    const addPeopleToBoard = async(email) => {
+        await shareBoard(email).then((res) => {
+            console.log(res)
+            if(res.status == "200") {
+                alert("Board shared successfully")
+                setShowAddPopUp(false)
+            } else {
+                alert(res.message)
+            }
+        }).catch(error => alert(error))
     }
 
     return (
