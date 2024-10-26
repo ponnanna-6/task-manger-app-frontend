@@ -208,16 +208,18 @@ export default function Board ({}) {
                     <div key={index} className={styles.taskCategory}>
                         <div className={styles.taskCategoryHeader}>
                             <p>{item.name}</p>
-                            {item.id == 1 && 
-                                <IoMdAdd 
-                                    onClick={() => {
-                                        setAddtask(true)
-                                        setIsEdit(false)
-                                    }}
-                                    className={styles.addIcon}
-                                />
-                            }
-                            <VscCollapseAll className={styles.collapseIcon} onClick={() => toggleCollapse(item.id)}/>
+                            <div style={{gap: "3vw"}}>
+                                {item.id == 1 && 
+                                    <IoMdAdd 
+                                        onClick={() => {
+                                            setAddtask(true)
+                                            setIsEdit(false)
+                                        }}
+                                        className={styles.addIcon}
+                                    />
+                                }
+                                <VscCollapseAll className={styles.collapseIcon} onClick={() => toggleCollapse(item.id)}/>
+                            </div>
                         </div>
                         <div className={styles.tasks}>
                             {mappingData[item.id].map((task, index) => (

@@ -11,4 +11,7 @@
     margin-left: 22vw; /* Shift the content to the right to avoid overlap */
     align-self: flex-end;
     overflow-x: scroll;
+    scrollbar-width: thin;
+    -ms-overflow-style: auto;
+    scrollbar-color: #9CB7C5 transparent;
 }

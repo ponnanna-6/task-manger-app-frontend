@@ -53,6 +53,7 @@
 
 .addIcon {
     cursor: pointer;
+    margin-right: 0.5vw;
 }
 
 .filterContainer {
@@ -91,4 +92,7 @@
     margin: 1rem;
     overflow-y: scroll;
     border-radius: 5px;
+    scrollbar-width: thin;
+    -ms-overflow-style: auto;
+    scrollbar-color: #9CB7C5 transparent;
 }

@@ -247,3 +247,11 @@
   font-weight: 500;
   color: red;
 }
+
+.checklistText {
+  font-family: "Inter";
+  font-size: 14px;
+  font-weight: 500;
+  color: #20102B;
+  line-height: 0px;
+}
