@@ -4,10 +4,11 @@ import { MdDelete } from "react-icons/md";
 import { addTaskToDb, editTaskInDb } from "../../services/tasks";
 import { formatDate, validateEmail } from "../../helper/utils";
 import Select from 'react-dropdown-select'
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRefreshData, userData}) {
     if (!isOpen) return null;
-
     const [formData, setFormData] = useState({
         title: isEdit ? editTaskData.title : "",
         priority: isEdit ? editTaskData.priority : "",
@@ -136,7 +137,18 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
         if (isEdit) {
             await editTaskInDb(editTaskData?._id, formData).then((res) => {
                 if (res.status == "200") {
-                    alert('updated sucessfully')
+                    toast('🦄 Wow so easy!', {
+                        position: "top-center",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                        transition: Bounce,
+                        });
+                    // alert('updated sucessfully')
                     setRefreshData(true)
                     onClose();
                 } else {
@@ -240,14 +252,15 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
                         </label>
                         <ul className={styles.checklist}>
                             {formData.checklist.map((item, index) => (
-                                <li key={index}>
-                                    <span>
+                                <li key={index} style={{alignItems: "center", padding: "5px", flexDirection: "row", display: "flex"}}>
+                                    <span style={{alignItems: "center", flexDirection: "row", display: "flex"}}>
                                         <input 
                                             type="checkbox"
                                             checked={item.checked}
                                             onChange={() => toggleChecklistItem(index)}
+                                            style={{marginRight: "10px"}}
                                         />
-                                        {item.message}
+                                        <p className={styles.checklistText}>{item.message}</p>
                                     </span>
                                     
                                     <MdDelete
