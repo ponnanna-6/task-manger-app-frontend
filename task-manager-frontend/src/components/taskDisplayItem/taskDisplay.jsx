@@ -107,7 +107,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                     <p className={styles.priority}><span style={{ color: colors[task?.priority], fontSize: '2vw' }}>.</span>{task?.priority}</p>
 
                     {task?.assignedTo.length>0 &&
-                        <div style={{ width: "1vw", height: "0.8vw", flexDirection: "row", display: "flex", gap: "0.2vw", borderRadius: "50%", width: "auto" }}>  
+                        <div style={{ width: "1vw", height: "0.8vw", flexDirection: "row", display: "flex", gap: "0.2vw", borderRadius: "50%"}}>  
                             {task?.assignedTo.map((item, index) => (
                             <EmailIcon email={item?.email} key={index} />
                             ))}

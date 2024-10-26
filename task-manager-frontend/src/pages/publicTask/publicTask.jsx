@@ -7,6 +7,7 @@ import { getIdFromToken, validateEmail } from '../../helper/utils'
 import { loginUser } from '../../services/auth'
 import { getPublicTask } from '../../services/tasks'
 import { TaskDisplay } from '../../components/taskDisplayItem/taskDisplay'
+import logo from '../../assets/logo.svg'
 
 export default function PublicTask({}) {
     const { id } = useParams();
@@ -33,6 +34,10 @@ export default function PublicTask({}) {
 
     return (
         <div className={styles.container}>
+            <div className={styles.appNameContainer}>
+                <img src={logo} alt="Logo"/>
+                <p >Pro-Manage</p>
+            </div>
             {!isLoading && <TaskDisplay task={task} isPublic={true}/>}
         </div>
     )
