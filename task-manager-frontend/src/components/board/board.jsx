@@ -72,8 +72,7 @@ export default function Board ({}) {
         },
         "month": {
             name: "This Month",
-            onClick: () => { 
-                console.log("MONTH")
+            onClick: () => {
                 setFilter("month")
             },
         }
@@ -110,13 +109,6 @@ export default function Board ({}) {
         const getData = async() => {
             await getUserTasks(filter).then((res) => {
                 if(res.status == "200") {
-                    //filter data by filter before setting
-                    if(filter == "today") {
-                        res.data = res.data.filter((item) => {
-                            let date = getTodaysDate()
-                            return item.dueDate == date
-                        })
-                    }
                     setAllData(res.data)
                 }
             }).catch(error => console.log(error))
