@@ -4,6 +4,7 @@ import styles from './board.module.css'
 import { getTodaysDate } from '../../helper/utils'
 import { useNavigate } from 'react-router-dom'
 import { IoMdAdd } from "react-icons/io";
+import { VscCollapseAll } from "react-icons/vsc";
 import TaskPopUp from '../taskPopUp/taskPopUp'
 import { deleteTaskById, getTaskById, getUserTasks } from '../../services/tasks'
 import { TaskDisplay } from '../taskDisplayItem/taskDisplay'
@@ -25,6 +26,13 @@ export default function Board ({}) {
     const [refreshData, setRefreshData] = useState(false)
     const [filter, setFilter] = useState("week")
     const [showAddPopUp, setShowAddPopUp] = useState(false)
+    const [collapsedCategories, setCollapsedCategories] = useState({
+        0: false,
+        1: false,
+        2: false,
+        3: false
+    });
+    
 
     const mappingData = {
         0: backlogData,
@@ -47,9 +55,6 @@ export default function Board ({}) {
         {id: 2, name: 'In Progress'},
         {id: 3, name: 'Done'},
     ]
-    useEffect(() => {
-        console.log("FILTER", filter)
-    }, [filter])
 
     const filterMapping = {
         "today": {
@@ -141,6 +146,14 @@ export default function Board ({}) {
         }).catch(error => alert(error))
     }
 
+    const toggleCollapse = (categoryId) => {
+        setCollapsedCategories((prevState) => ({
+            ...prevState,
+            [categoryId]: !prevState[categoryId]
+        }));
+    };
+    
+
     return (
         <div className={styles.container}>
             <div className={styles.boardHeader}>
@@ -173,6 +186,7 @@ export default function Board ({}) {
                                     className={styles.addIcon}
                                 />
                             }
+                            <VscCollapseAll className={styles.collapseIcon} onClick={() => toggleCollapse(item.id)}/>
                         </div>
                         <div className={styles.tasks}>
                             {mappingData[item.id].map((task, index) => (
@@ -182,6 +196,7 @@ export default function Board ({}) {
                                     onEditTask={onEditTask}
                                     deleteTask={deleteTask}
                                     setRefreshData={setRefreshData}
+                                    collapse = {collapsedCategories[item.id]}
                                 />
                             ))}
                         </div>

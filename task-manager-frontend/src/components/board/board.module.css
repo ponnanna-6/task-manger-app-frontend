@@ -60,3 +60,7 @@
     height: 20px;
     border: none;
 }
+
+.collapseIcon {
+    cursor: pointer;
+}

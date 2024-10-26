@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './taskDisplay.module.css'
 import { SlOptions } from "react-icons/sl";
 import { FaChevronDown } from "react-icons/fa";
@@ -8,7 +8,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { updateCheckListStatus, updateTaskState } from '../../services/tasks';
 
-export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPublic }) {
+export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPublic, collapse}) {
     const [showDropDown, setShowDropDown] = useState(false);
     const [showChecklist, setShowChecklist] = useState(false);
 
@@ -84,6 +84,10 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
             alert("Could not update task")
         }
     };
+
+    useEffect(() => {
+        setShowChecklist(false)
+    }, [collapse])
 
     return (
         <div
