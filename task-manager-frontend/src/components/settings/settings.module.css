@@ -10,7 +10,7 @@
 .container2 {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     width: 50%;
 }
@@ -18,9 +18,8 @@
 .headerText {
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
-    font-size: 3vw;
-    line-height: 4vw;
-    text-align: center;
+    font-size: 2vw;
+    text-align: left;
     color: #343434;
 }
 

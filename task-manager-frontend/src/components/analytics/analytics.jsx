@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import styles from './analytics.module.css'
 import { getUserAnalytics } from '../../services/analytics'
+import { FaCircle } from "react-icons/fa";
 export default function Analytics({ }) {
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState({})
@@ -87,19 +88,19 @@ export default function Analytics({ }) {
         <div className={styles.container}>
             <p className={styles.headerText}>Analytics</p>
             {!isLoading &&
-                <div style={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-evenly", alignItems: "center" }}>
-                    <div>
+                <div style={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-evenly", alignItems: "center", marginTop: "10vh"}}>
+                    <div className={styles.subContainer}>
                         {tasksContainer.map((item, index) => (
                             <div key={index} className={styles.taskContainer}>
-                                <p className={styles.taskName}>{item.name}</p>
+                                <p className={styles.taskName}><span><FaCircle color='#90C4CC'/></span>&nbsp;&nbsp;{item.name}</p>
                                 <p className={styles.taskCount}>{item.count}</p>
                             </div>
                         ))}
                     </div>
-                    <div>
+                    <div className={styles.subContainer}>
                         {priorityContainer.map((item, index) => (
                             <div key={index} className={styles.taskContainer}>
-                                <p className={styles.taskName}>{item.name}</p>
+                                <p className={styles.taskName}><span><FaCircle color='#90C4CC'/></span>&nbsp;&nbsp;{item.name}</p>
                                 <p className={styles.taskCount}>{item.count}</p>
                             </div>
                         ))}
