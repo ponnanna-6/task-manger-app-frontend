@@ -15,13 +15,63 @@
     color: #343434;
 }
 
+.welcomeText {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.5vw;
+    text-align: center;
+    color: black;
+}
+
+.dateText {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 1vw;
+    text-align: center;
+    color: #707070;
+}
+
+.addPeopleText {
+    font-family: 'Poppins';
+    font-weight: 500;
+    font-size: 1vw;
+    text-align: left;
+    color: #707070;
+    cursor: pointer;
+    margin-left: -0.5vw;
+    margin-top: 0.5vh;
+}
+
+.taskCategoryHeader {
+    display: flex;
+    flex-direction: row;
+    height: 5vh;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+.addIcon {
+    cursor: pointer;
+}
+
+.filterContainer {
+    height: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.collapseIcon {
+    cursor: pointer;
+}
+
+
 .boardHeader {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     width: 70vw;
-    margin-bottom: 0.1rem;
 }
 
 .tasksContainer {
@@ -41,26 +91,4 @@
     margin: 1rem;
     overflow-y: scroll;
     border-radius: 5px;
-}
-
-.taskCategoryHeader {
-    display: flex;
-    flex-direction: row;
-    height: 5vh;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem;
-}
-
-.addIcon {
-    cursor: pointer;
-}
-
-.filterContainer {
-    height: 20px;
-    border: none;
-}
-
-.collapseIcon {
-    cursor: pointer;
 }

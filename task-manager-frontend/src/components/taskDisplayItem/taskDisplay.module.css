@@ -18,10 +18,20 @@
 .priority {
     font-family: 'Open Sans', sans-serif;
     font-size: 0.5vw;
+    margin-top: -2.5vh;
     font-weight: 600;
     text-align: left;
     color: black;
-    margin-top: -10px;
+    align-self: center;
+    justify-self: center;
+}
+
+.priorityContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: top;
+    justify-content: center;
+    gap: 0.5vw;
 }
 
 .dropDown {

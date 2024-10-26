@@ -13,6 +13,7 @@ import Popup from '../popup/popup'
 import { shareBoard } from '../../services/acess'
 import { getBoardData } from '../../services/board'
 import { all } from 'axios'
+import EmailIcon from '../emailIcon/emailIcon'
 export default function Board ({}) {
     const navigate = useNavigate()
 
@@ -119,8 +120,8 @@ export default function Board ({}) {
                     setAllData(res.data)
                 }
             }).catch(error => console.log(error))
-            setRefreshData(false)
         }
+        setRefreshData(false)
         getData()
     }, [refreshData, filter])
 
@@ -176,20 +177,34 @@ export default function Board ({}) {
     return (
         <div className={styles.container}>
             <div className={styles.boardHeader}>
-                <p>{`Welcome ! ${userData?.name}`}</p>
-                {boardData?.emailList && 
-                    boardData.emailList.map((item, index) => (
-                        <p key={index}>{item}</p>
-                    ))
-                }
-                <p>{getTodaysDate()}</p>
+
             </div>
             <div className={styles.boardHeader}>
-                <p className={styles.headerText}>Board</p>
-                <PiUsers 
-                    style={{fontSize: "20px", marginRight: "10px", cursor: "pointer"}}
-                    onClick={() => {setShowAddPopUp(true)}}
-                />
+                <p className={styles.welcomeText}>{`Welcome ! ${userData?.name}`}</p>
+                <p className={styles.dateText}>{getTodaysDate()}</p>
+            </div>
+            <div className={styles.boardHeader}>
+                <div style={{display: "flex", alignItems: "center", flexDirection: "row", gap: "10px"}}>
+                    <p className={styles.headerText}>Board</p>
+                    <PiUsers 
+                        style={{
+                            fontSize: "1.3vw",
+                            cursor: "pointer",
+                            marginLeft: "0.3vw",
+                            color: "#707070"
+                        }}
+                        onClick={() => {setShowAddPopUp(true)}}
+                    />
+                    <label className={styles.addPeopleText} onClick={() => setShowAddPopUp(true)}>Add People</label>
+                    <div style={{ flexDirection: "row", display: "flex", gap: "0.2vw" }}>  
+                    {boardData?.emailList && 
+                        boardData.emailList.map((item, index) => (
+                            <EmailIcon email={item} key={index} />
+                        ))
+                    }
+                    </div>
+                </div>
+                
                 <select className={styles.filterContainer} value={filter} onChange={(e) => filterMapping[e.target.value].onClick()}>
                     {Object.keys(filterMapping).map((key, index) => 
                         <option key={index} value={key}>{filterMapping[key].name}</option>)

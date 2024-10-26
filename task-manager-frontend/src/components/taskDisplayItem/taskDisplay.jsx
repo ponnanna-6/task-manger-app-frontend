@@ -7,8 +7,9 @@ import { getDueData, isBeforeDueDate, writeShareLinkToClipboard } from '../../he
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { updateCheckListStatus, updateTaskState } from '../../services/tasks';
+import EmailIcon from '../emailIcon/emailIcon';
 
-export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPublic, collapse}) {
+export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPublic, collapse }) {
     const [showDropDown, setShowDropDown] = useState(false);
     const [showChecklist, setShowChecklist] = useState(false);
 
@@ -72,8 +73,8 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
         "IN PROGRESS",
         "DONE"
     ]
-    const toggleChecklistItem = async(index) => {
-        const updatedChecklist = task.checklist.map((item, i) => 
+    const toggleChecklistItem = async (index) => {
+        const updatedChecklist = task.checklist.map((item, i) =>
             i === index ? { ...item, checked: !item.checked } : item
         );
 
@@ -95,7 +96,17 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
             style={isPublic ? { width: '100%', maxHeight: '80%', overflow: 'auto' } : {}}
         >
             <div className={styles.header1}>
-                <p className={styles.priority}><span style={{ color: colors[task?.priority], fontSize: '2vw' }}>.</span>{task?.priority}<span>&nbsp;&nbsp;&nbsp;&nbsp;{}</span></p>
+                <div className={styles.priorityContainer}>
+                    <p className={styles.priority}><span style={{ color: colors[task?.priority], fontSize: '2vw' }}>.</span>{task?.priority}</p>
+
+                    {task?.assignedTo.length>0 &&
+                        <div style={{ width: "1vw", height: "0.8vw", flexDirection: "row", display: "flex", gap: "0.2vw", borderRadius: "50%", width: "auto" }}>  
+                            {task?.assignedTo.map((item, index) => (
+                            <EmailIcon email={item?.email} key={index} />
+                            ))}
+                        </div>
+                    }
+                </div>
 
                 {(showDropDown && !isPublic) && (
                     <div className={styles.dropDown}>
@@ -108,7 +119,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
 
             </div>
             <p
-                className={styles.title} 
+                className={styles.title}
             >
                 {task.title}
             </p>
@@ -123,13 +134,13 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                     )}
                 </div>
                 {(showChecklist || isPublic) &&
-                    <div className={styles.checklistDropContainer} style={isPublic ? { width: '100%'} : {}}>
+                    <div className={styles.checklistDropContainer} style={isPublic ? { width: '100%' } : {}}>
                         {task?.checklist?.map((item, index) => (
                             <div key={index} className={styles.checklistItemContainer}>
-                                <input 
+                                <input
                                     type="checkbox"
                                     checked={item.checked}
-                                    onChange={() => !isPublic && toggleChecklistItem(index)}    
+                                    onChange={() => !isPublic && toggleChecklistItem(index)}
                                 />
                                 <p>{item.message}</p>
                             </div>
@@ -137,6 +148,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                     </div>
                 }
             </div>
+
             <div className={styles.footer}>
                 {task.dueDate &&
                     <div className={styles.dueDate} style={{ backgroundColor: setDueDateColor(task?.dueDate) }}>
