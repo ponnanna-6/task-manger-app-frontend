@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getUserInfo } from '../../services/auth'
+import { getAllUsers, getUserInfo } from '../../services/auth'
 import styles from './board.module.css'
 import { getTodaysDate } from '../../helper/utils'
 import { useNavigate } from 'react-router-dom'
@@ -12,6 +12,7 @@ import { PiUsers } from "react-icons/pi";
 import Popup from '../popup/popup'
 import { shareBoard } from '../../services/acess'
 import { getBoardData } from '../../services/board'
+import { all } from 'axios'
 export default function Board ({}) {
     const navigate = useNavigate()
 
@@ -28,6 +29,7 @@ export default function Board ({}) {
     const [filter, setFilter] = useState("week")
     const [showAddPopUp, setShowAddPopUp] = useState(false)
     const [boardData, setBoardData] = useState({})
+    const [allUserData, setAllUserData] = useState([])
     const [collapsedCategories, setCollapsedCategories] = useState({
         0: false,
         1: false,
@@ -88,6 +90,13 @@ export default function Board ({}) {
             await getBoardData().then((res) => {
                 if(res.status == "200") {
                     setBoardData(res.data)
+                }
+            })
+            .catch(error => console.log(error))
+
+            await getAllUsers().then((res) => {
+                if(res.status == "200") {
+                    setAllUserData(res.data)
                 }
             })
             .catch(error => console.log(error))
@@ -224,6 +233,7 @@ export default function Board ({}) {
                 onClose={() => {setAddtask(false)}}
                 editTaskData={editTaskData}
                 setRefreshData={setRefreshData}
+                userData={allUserData}
             />
             {showAddPopUp && <Popup 
                 from={"addPeople"}

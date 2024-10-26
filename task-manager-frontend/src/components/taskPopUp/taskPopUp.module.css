@@ -78,6 +78,20 @@
   line-height: 1.5rem;
 }
 
+.selectContainer {
+  font-family: "Inter";
+  max-width: 35vw;
+  min-width: 30vw;
+  padding: 8px;
+  border: 1px solid red;
+  border-radius: 4px;
+  font-size: 14px;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  line-height: 1.5rem;
+}
+
 .dateInput {
   border: 1px solid #ccc;
   font-family: "Poppins";

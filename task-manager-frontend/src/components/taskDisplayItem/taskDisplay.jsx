@@ -95,7 +95,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
             style={isPublic ? { width: '100%', maxHeight: '80%', overflow: 'auto' } : {}}
         >
             <div className={styles.header1}>
-                <p className={styles.priority}><span style={{ color: colors[task?.priority], fontSize: '2vw' }}>.</span>{task?.priority}<span>&nbsp;&nbsp;&nbsp;&nbsp;{task?.assignedTo?.charAt(0).toUpperCase()}</span></p>
+                <p className={styles.priority}><span style={{ color: colors[task?.priority], fontSize: '2vw' }}>.</span>{task?.priority}<span>&nbsp;&nbsp;&nbsp;&nbsp;{}</span></p>
 
                 {(showDropDown && !isPublic) && (
                     <div className={styles.dropDown}>

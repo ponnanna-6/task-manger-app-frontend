@@ -3,8 +3,9 @@ import styles from "./taskPopUp.module.css";
 import { MdDelete } from "react-icons/md";
 import { addTaskToDb, editTaskInDb } from "../../services/tasks";
 import { formatDate, validateEmail } from "../../helper/utils";
+import Select from 'react-dropdown-select'
 
-export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRefreshData }) {
+export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRefreshData, userData}) {
     if (!isOpen) return null;
 
     const [formData, setFormData] = useState({
@@ -57,7 +58,7 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
         },
         assignedTo: {
             message: "Enter a valid email id",
-            isValid: formData.assignedTo.length == "" || validateEmail(formData.assignedTo),
+            isValid: formData.assignedTo.length == "" || formData.assignedTo.length > 0,
             onError: () => {
                 setError((prevError) => ({ ...prevError, assignedTo: true }));
             },
@@ -158,10 +159,17 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
     };
 
     const onChangeInput = (e, param) => {
-        setFormData({ ...formData, [param]: e.target.value });
-        setCurrentError({ name: "", message: "" });
+        if(param == "assignedTo") {
+            setFormData({ ...formData, [param]: e });
+            setCurrentError({ name: "", message: "" });
+            console.log(formData)
+        } else {
+            setFormData({ ...formData, [param]: e.target.value });
+            setCurrentError({ name: "", message: "" });
+        }
     };
 
+    console.log(userData)
     return (
         <div className={styles.popupOverlay}>
             <div className={styles.popupContentOuter}>
@@ -209,11 +217,18 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
 
                     <div className={styles.formGroupRow}>
                         <label className={styles.label}>Assign To&nbsp;</label>
-                        <input
-                            type="email"
-                            value={formData.assignedTo}
-                            onChange={(e) => onChangeInput(e, "assignedTo")}
-                            placeholder="Add an assignee"
+                        <Select
+                            multi
+                            options={userData}
+                            values={isEdit ? editTaskData.assignedTo : []}
+                            dropdownHandleRenderer={({ state }) => (
+                                <span>{state.dropdown ? '–' : '+'}</span>
+                            )}
+                            onChange={(value) => onChangeInput(value, "assignedTo")}
+                            labelField="email"
+                            valueField="email"
+                            className={styles.selectContainer}
+                            placeholder="Add to assign"
                         />
                     </div>
 
