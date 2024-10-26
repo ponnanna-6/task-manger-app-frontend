@@ -8,10 +8,12 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { updateCheckListStatus, updateTaskState } from '../../services/tasks';
 import EmailIcon from '../emailIcon/emailIcon';
+import Popup from '../popup/popup';
 
 export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPublic, collapse }) {
     const [showDropDown, setShowDropDown] = useState(false);
     const [showChecklist, setShowChecklist] = useState(false);
+    const [deletePopup, setDeletePopup] = useState(false);
 
     const updateState = async (state) => {
         const res = await updateTaskState(task._id, state)
@@ -62,7 +64,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
             name: "Delete",
             onClick: () => {
                 setShowDropDown(false)
-                deleteTask(task._id)
+                setDeletePopup(true)
             }
         }
     }
@@ -89,6 +91,11 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
     useEffect(() => {
         setShowChecklist(false)
     }, [collapse])
+    
+    const deleteConfirm = () => {
+        setDeletePopup(false)
+        deleteTask(task._id)
+    }
 
     return (
         <div
@@ -168,6 +175,15 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                 )}
 
             </div>
+            
+            <Popup
+                onConfirm={deleteConfirm}
+                isOpen={deletePopup}
+                onClose={() => setDeletePopup(false)}
+                message="Are you sure you want to Delete Task?"
+                cancelButtonText={"Cancel"}
+                confirmButtonText={"Yes, Delete"}
+            />
         </div>
     )
 }
