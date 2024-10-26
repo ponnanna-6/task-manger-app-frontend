@@ -45,13 +45,6 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                 setShowDropDown(false)
             }
         },
-        "Delete": {
-            name: "Delete",
-            onClick: () => {
-                setShowDropDown(false)
-                deleteTask(task._id)
-            }
-        },
         "Share": {
             name: "Share",
             onClick: () => {
@@ -62,6 +55,13 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                     alert('Failed to copy link')
                 }
                 setShowDropDown(false)
+            }
+        },
+        "Delete": {
+            name: "Delete",
+            onClick: () => {
+                setShowDropDown(false)
+                deleteTask(task._id)
             }
         }
     }
@@ -100,7 +100,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                 {(showDropDown && !isPublic) && (
                     <div className={styles.dropDown}>
                         {Object.keys(dropDownOptions).map((option, index) => (
-                            <p key={index} style={{ cursor: 'pointer' }} onClick={dropDownOptions[option].onClick}>{option}</p>
+                            <p key={index} style={{ cursor: 'pointer', color: option === "Delete" ? "red" : "black" }} onClick={dropDownOptions[option].onClick}>{option}</p>
                         ))}
                     </div>
                 )}

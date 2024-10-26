@@ -11,6 +11,7 @@ import { TaskDisplay } from '../taskDisplayItem/taskDisplay'
 import { PiUsers } from "react-icons/pi";
 import Popup from '../popup/popup'
 import { shareBoard } from '../../services/acess'
+import { getBoardData } from '../../services/board'
 export default function Board ({}) {
     const navigate = useNavigate()
 
@@ -26,6 +27,7 @@ export default function Board ({}) {
     const [refreshData, setRefreshData] = useState(false)
     const [filter, setFilter] = useState("week")
     const [showAddPopUp, setShowAddPopUp] = useState(false)
+    const [boardData, setBoardData] = useState({})
     const [collapsedCategories, setCollapsedCategories] = useState({
         0: false,
         1: false,
@@ -82,6 +84,13 @@ export default function Board ({}) {
                 }
             })
             .catch(error => navigate('/login'))
+
+            await getBoardData().then((res) => {
+                if(res.status == "200") {
+                    setBoardData(res.data)
+                }
+            })
+            .catch(error => console.log(error))
         }
         getUserData()
     }, [])
@@ -140,6 +149,7 @@ export default function Board ({}) {
             if(res.status == "200") {
                 alert("Board shared successfully")
                 setShowAddPopUp(false)
+                setRefreshData(true)
             } else {
                 alert(res.message)
             }
@@ -158,6 +168,11 @@ export default function Board ({}) {
         <div className={styles.container}>
             <div className={styles.boardHeader}>
                 <p>{`Welcome ! ${userData?.name}`}</p>
+                {boardData?.emailList && 
+                    boardData.emailList.map((item, index) => (
+                        <p key={index}>{item}</p>
+                    ))
+                }
                 <p>{getTodaysDate()}</p>
             </div>
             <div className={styles.boardHeader}>
