@@ -110,23 +110,30 @@ export default function Board({ }) {
         getUserData()
     }, [])
 
-
     useEffect(() => {
+        const previousFilter = useRef(filter);
         const getData = async () => {
-            setIsLoading(true)
+            if (previousFilter.current !== filter) {
+                setIsLoading(true);
+            }
+
             await getUserTasks(filter).then((res) => {
                 if (res.status == "200") {
-                    setIsLoading(false)
-                    setAllData(res.data)
+                    setAllData(res.data);
                 }
             }).catch(error => {
-                setIsLoading(false)
-                console.log(error)
-            })
-        }
-        setRefreshData(false)
-        getData()
-    }, [refreshData, filter])
+                console.log(error);
+            }).finally(() => {
+                setIsLoading(false);
+            });
+            
+            previousFilter.current = filter;
+        };
+
+        setRefreshData(false);
+        getData();
+    }, [refreshData, filter]);
+
 
     useEffect(() => {
         if (allData) {
