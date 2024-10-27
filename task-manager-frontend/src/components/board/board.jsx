@@ -15,9 +15,11 @@ import { getBoardData } from '../../services/board'
 import { all } from 'axios'
 import EmailIcon from '../emailIcon/emailIcon'
 import { alertToast, errorToast } from '../../helper/toast'
-export default function Board ({}) {
+import ActivityIndicator from '../activityIndicator/activityIndicator'
+export default function Board({ }) {
     const navigate = useNavigate()
 
+    const [isLoading, setIsLoading] = useState(true)
     const [addtask, setAddtask] = useState(false)
     const [allData, setAllData] = useState([])
     const [backlogData, setBacklogData] = useState([])
@@ -38,7 +40,7 @@ export default function Board ({}) {
         2: false,
         3: false
     });
-    
+
 
     const mappingData = {
         0: backlogData,
@@ -56,10 +58,10 @@ export default function Board ({}) {
 
 
     const boardDivisions = [
-        {id: 0, name: 'Backlog'},
-        {id: 1, name: 'To Do'},
-        {id: 2, name: 'In Progress'},
-        {id: 3, name: 'Done'},
+        { id: 0, name: 'Backlog' },
+        { id: 1, name: 'To Do' },
+        { id: 2, name: 'In Progress' },
+        { id: 3, name: 'Done' },
     ]
 
     const filterMapping = {
@@ -69,7 +71,7 @@ export default function Board ({}) {
         },
         "week": {
             name: "This Week",
-            onClick: () => { setFilter("week") },    
+            onClick: () => { setFilter("week") },
         },
         "month": {
             name: "This Month",
@@ -80,38 +82,39 @@ export default function Board ({}) {
     }
 
     useEffect(() => {
-        const getUserData = async() => {
+        const getUserData = async () => {
             await getUserInfo().then((res) => {
-                if(res.status == "200") {
+                if (res.status == "200") {
                     setUserData(res.data)
+                    setIsLoading(false)
                 } else {
                     logOutUser()
                 }
             })
-            .catch(error => navigate('/login'))
+                .catch(error => navigate('/login'))
 
             await getBoardData().then((res) => {
-                if(res.status == "200") {
+                if (res.status == "200") {
                     setBoardData(res.data)
                 }
             })
-            .catch(error => console.log(error))
+                .catch(error => console.log(error))
 
             await getAllUsers().then((res) => {
-                if(res.status == "200") {
+                if (res.status == "200") {
                     setAllUserData(res.data)
                 }
             })
-            .catch(error => console.log(error))
+                .catch(error => console.log(error))
         }
         getUserData()
     }, [])
 
 
     useEffect(() => {
-        const getData = async() => {
+        const getData = async () => {
             await getUserTasks(filter).then((res) => {
-                if(res.status == "200") {
+                if (res.status == "200") {
                     setAllData(res.data)
                 }
             }).catch(error => console.log(error))
@@ -121,7 +124,7 @@ export default function Board ({}) {
     }, [refreshData, filter])
 
     useEffect(() => {
-        if(allData) {
+        if (allData) {
             setBacklogData(allData.filter((item) => item.taskStatus == nameMapping[0]))
             setTodoData(allData.filter((item) => item.taskStatus == nameMapping[1]))
             setInprogressData(allData.filter((item) => item.taskStatus == nameMapping[2]))
@@ -129,29 +132,29 @@ export default function Board ({}) {
         }
     }, [allData])
 
-    const onEditTask = async(id) => {
+    const onEditTask = async (id) => {
         await getTaskById(id).then((res) => {
-            if(res.status == "200") {
-                setEditTaskData(res.data)        
+            if (res.status == "200") {
+                setEditTaskData(res.data)
                 setIsEdit(true)
                 setAddtask(true)
             }
         }).catch(error => console.log(error))
     }
 
-    const deleteTask = async(id) => {
+    const deleteTask = async (id) => {
         await deleteTaskById(id).then((res) => {
-            if(res.status == "200") {
+            if (res.status == "200") {
                 setRefreshData(true)
                 alertToast("Task deleted successfully")
             }
         }).catch(error => console.log(error))
     }
 
-    const addPeopleToBoard = async(email) => {
+    const addPeopleToBoard = async (email) => {
         await shareBoard(email).then((res) => {
             console.log(res)
-            if(res.status == "200") {
+            if (res.status == "200") {
                 alertToast("Board shared successfully")
                 setShowAddPopUp(false)
                 setRefreshData(true)
@@ -167,94 +170,97 @@ export default function Board ({}) {
             [categoryId]: !prevState[categoryId]
         }));
     };
-    
+
 
     return (
-        <div className={styles.container}>
-            <div className={styles.boardHeaderContainer}>    
-                <div className={styles.boardHeader}>
-                    <p className={styles.welcomeText}>{`Welcome ! ${userData?.name}`}</p>
-                    <p className={styles.dateText}>{getTodaysDate()}</p>
-                </div>
-                <div className={styles.boardHeader}>
-                    <div style={{display: "flex", alignItems: "center", flexDirection: "row", gap: "10px"}}>
-                        <p className={styles.headerText}>Board</p>
-                        <PiUsers 
-                            style={{
-                                fontSize: "1.3vw",
-                                cursor: "pointer",
-                                marginLeft: "0.3vw",
-                                color: "#707070"
-                            }}
-                            onClick={() => {setShowAddPopUp(true)}}
-                        />
-                        <label className={styles.addPeopleText} onClick={() => setShowAddPopUp(true)}>Add People</label>
-                        <div style={{ flexDirection: "row", display: "flex", gap: "0.2vw" }}>  
-                        {boardData?.emailList && 
-                            boardData.emailList.map((item, index) => (
-                                <EmailIcon email={item} key={index} />
-                            ))
-                        }
-                        </div>
+        <>
+            {isLoading && <ActivityIndicator />}
+            {!isLoading && <div className={styles.container}>
+                <div className={styles.boardHeaderContainer}>
+                    <div className={styles.boardHeader}>
+                        <p className={styles.welcomeText}>{`Welcome ! ${userData?.name}`}</p>
+                        <p className={styles.dateText}>{getTodaysDate()}</p>
                     </div>
-                    
-                    <select className={styles.filterContainer} value={filter} onChange={(e) => filterMapping[e.target.value].onClick()}>
-                        {Object.keys(filterMapping).map((key, index) => 
-                            <option key={index} value={key}>{filterMapping[key].name}</option>)
-                        }
-                    </select>
-                </div>
-            </div>
-            <div className={styles.tasksContainer}>
-                {boardDivisions.map((item, index) => (
-                    <div key={index} className={styles.taskCategory}>
-                        <div className={styles.taskCategoryHeader}>
-                            <p>{item.name}</p>
-                            <div style={{gap: "3vw"}}>
-                                {item.id == 1 && 
-                                    <IoMdAdd 
-                                        onClick={() => {
-                                            setAddtask(true)
-                                            setIsEdit(false)
-                                        }}
-                                        className={styles.addIcon}
-                                    />
+                    <div className={styles.boardHeader}>
+                        <div style={{ display: "flex", alignItems: "center", flexDirection: "row", gap: "10px" }}>
+                            <p className={styles.headerText}>Board</p>
+                            <PiUsers
+                                style={{
+                                    fontSize: "1.3vw",
+                                    cursor: "pointer",
+                                    marginLeft: "0.3vw",
+                                    color: "#707070"
+                                }}
+                                onClick={() => { setShowAddPopUp(true) }}
+                            />
+                            <label className={styles.addPeopleText} onClick={() => setShowAddPopUp(true)}>Add People</label>
+                            <div style={{ flexDirection: "row", display: "flex", gap: "0.2vw" }}>
+                                {boardData?.emailList &&
+                                    boardData.emailList.map((item, index) => (
+                                        <EmailIcon email={item} key={index} />
+                                    ))
                                 }
-                                <VscCollapseAll className={styles.collapseIcon} onClick={() => toggleCollapse(item.id)}/>
                             </div>
                         </div>
-                        <div className={styles.tasks}>
-                            {mappingData[item.id].map((task, index) => (
-                                <TaskDisplay 
-                                    key={index}
-                                    task={task}
-                                    onEditTask={onEditTask}
-                                    deleteTask={deleteTask}
-                                    setRefreshData={setRefreshData}
-                                    collapse = {collapsedCategories[item.id]}
-                                />
-                            ))}
-                        </div>
+
+                        <select className={styles.filterContainer} value={filter} onChange={(e) => filterMapping[e.target.value].onClick()}>
+                            {Object.keys(filterMapping).map((key, index) =>
+                                <option key={index} value={key}>{filterMapping[key].name}</option>)
+                            }
+                        </select>
                     </div>
-                ))}
-            </div>
-            <TaskPopUp 
-                isOpen={addtask}
-                isEdit={isEdit}
-                onClose={() => {setAddtask(false)}}
-                editTaskData={editTaskData}
-                setRefreshData={setRefreshData}
-                userData={allUserData}
-            />
-            {showAddPopUp && <Popup 
-                from={"addPeople"}
-                isOpen={showAddPopUp}
-                onClose={() => setShowAddPopUp(false)}
-                message={"Add people to the board"}
-                cancelButtonText={"Cancel"}
-                confirmButtonText={"Add"}
-                onConfirm={addPeopleToBoard}
-            />}
-        </div>
+                </div>
+                <div className={styles.tasksContainer}>
+                    {boardDivisions.map((item, index) => (
+                        <div key={index} className={styles.taskCategory}>
+                            <div className={styles.taskCategoryHeader}>
+                                <p>{item.name}</p>
+                                <div style={{ gap: "3vw" }}>
+                                    {item.id == 1 &&
+                                        <IoMdAdd
+                                            onClick={() => {
+                                                setAddtask(true)
+                                                setIsEdit(false)
+                                            }}
+                                            className={styles.addIcon}
+                                        />
+                                    }
+                                    <VscCollapseAll className={styles.collapseIcon} onClick={() => toggleCollapse(item.id)} />
+                                </div>
+                            </div>
+                            <div className={styles.tasks}>
+                                {mappingData[item.id].map((task, index) => (
+                                    <TaskDisplay
+                                        key={index}
+                                        task={task}
+                                        onEditTask={onEditTask}
+                                        deleteTask={deleteTask}
+                                        setRefreshData={setRefreshData}
+                                        collapse={collapsedCategories[item.id]}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <TaskPopUp
+                    isOpen={addtask}
+                    isEdit={isEdit}
+                    onClose={() => { setAddtask(false) }}
+                    editTaskData={editTaskData}
+                    setRefreshData={setRefreshData}
+                    userData={allUserData}
+                />
+                {showAddPopUp && <Popup
+                    from={"addPeople"}
+                    isOpen={showAddPopUp}
+                    onClose={() => setShowAddPopUp(false)}
+                    message={"Add people to the board"}
+                    cancelButtonText={"Cancel"}
+                    confirmButtonText={"Add"}
+                    onConfirm={addPeopleToBoard}
+                />}
+            </div>}
+        </>
     )
 }
