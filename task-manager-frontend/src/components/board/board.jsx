@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getAllUsers, getUserInfo } from '../../services/auth'
 import styles from './board.module.css'
 import { getTodaysDate, logOutUser } from '../../helper/utils'
@@ -18,7 +18,6 @@ import { alertToast, errorToast } from '../../helper/toast'
 import ActivityIndicator from '../activityIndicator/activityIndicator'
 export default function Board({ }) {
     const navigate = useNavigate()
-
     const [isLoading, setIsLoading] = useState(true)
     const [addtask, setAddtask] = useState(false)
     const [allData, setAllData] = useState([])
@@ -42,6 +41,8 @@ export default function Board({ }) {
     });
 
 
+    const previousFilter = useRef(filter);
+    
     const mappingData = {
         0: backlogData,
         1: todoData,
@@ -111,7 +112,6 @@ export default function Board({ }) {
     }, [])
 
     useEffect(() => {
-        const previousFilter = useRef(filter);
         const getData = async () => {
             if (previousFilter.current !== filter) {
                 setIsLoading(true);
@@ -126,7 +126,7 @@ export default function Board({ }) {
             }).finally(() => {
                 setIsLoading(false);
             });
-            
+
             previousFilter.current = filter;
         };
 
