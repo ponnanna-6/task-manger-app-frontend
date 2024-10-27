@@ -168,40 +168,39 @@ export default function Board ({}) {
 
     return (
         <div className={styles.container}>
-            <div className={styles.boardHeader}>
-
-            </div>
-            <div className={styles.boardHeader}>
-                <p className={styles.welcomeText}>{`Welcome ! ${userData?.name}`}</p>
-                <p className={styles.dateText}>{getTodaysDate()}</p>
-            </div>
-            <div className={styles.boardHeader}>
-                <div style={{display: "flex", alignItems: "center", flexDirection: "row", gap: "10px"}}>
-                    <p className={styles.headerText}>Board</p>
-                    <PiUsers 
-                        style={{
-                            fontSize: "1.3vw",
-                            cursor: "pointer",
-                            marginLeft: "0.3vw",
-                            color: "#707070"
-                        }}
-                        onClick={() => {setShowAddPopUp(true)}}
-                    />
-                    <label className={styles.addPeopleText} onClick={() => setShowAddPopUp(true)}>Add People</label>
-                    <div style={{ flexDirection: "row", display: "flex", gap: "0.2vw" }}>  
-                    {boardData?.emailList && 
-                        boardData.emailList.map((item, index) => (
-                            <EmailIcon email={item} key={index} />
-                        ))
-                    }
-                    </div>
+            <div className={styles.boardHeaderContainer}>    
+                <div className={styles.boardHeader}>
+                    <p className={styles.welcomeText}>{`Welcome ! ${userData?.name}`}</p>
+                    <p className={styles.dateText}>{getTodaysDate()}</p>
                 </div>
-                
-                <select className={styles.filterContainer} value={filter} onChange={(e) => filterMapping[e.target.value].onClick()}>
-                    {Object.keys(filterMapping).map((key, index) => 
-                        <option key={index} value={key}>{filterMapping[key].name}</option>)
-                    }
-                </select>
+                <div className={styles.boardHeader}>
+                    <div style={{display: "flex", alignItems: "center", flexDirection: "row", gap: "10px"}}>
+                        <p className={styles.headerText}>Board</p>
+                        <PiUsers 
+                            style={{
+                                fontSize: "1.3vw",
+                                cursor: "pointer",
+                                marginLeft: "0.3vw",
+                                color: "#707070"
+                            }}
+                            onClick={() => {setShowAddPopUp(true)}}
+                        />
+                        <label className={styles.addPeopleText} onClick={() => setShowAddPopUp(true)}>Add People</label>
+                        <div style={{ flexDirection: "row", display: "flex", gap: "0.2vw" }}>  
+                        {boardData?.emailList && 
+                            boardData.emailList.map((item, index) => (
+                                <EmailIcon email={item} key={index} />
+                            ))
+                        }
+                        </div>
+                    </div>
+                    
+                    <select className={styles.filterContainer} value={filter} onChange={(e) => filterMapping[e.target.value].onClick()}>
+                        {Object.keys(filterMapping).map((key, index) => 
+                            <option key={index} value={key}>{filterMapping[key].name}</option>)
+                        }
+                    </select>
+                </div>
             </div>
             <div className={styles.tasksContainer}>
                 {boardDivisions.map((item, index) => (
