@@ -7,9 +7,11 @@ import Select from 'react-dropdown-select'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { alertToast, errorToast } from "../../helper/toast";
+import ActivityIndicator from "../activityIndicator/activityIndicator";
 
 export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRefreshData, userData}) {
     if (!isOpen) return null;
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         title: isEdit ? editTaskData.title : "",
         priority: isEdit ? editTaskData.priority : "",
@@ -135,8 +137,10 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
         }
 
         if (isEdit) {
+            setIsLoading(true);
             await editTaskInDb(editTaskData?._id, formData).then((res) => {
                 if (res.status == "200") {
+                    setIsLoading(false);
                     alertToast("Task updated successfully")
                     setRefreshData(true)
                     onClose();
@@ -146,8 +150,10 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
                 }
             });
         } else {
+            setIsLoading(true);
             await addTaskToDb(formData).then((res) => {
                 if (res.status == "200") {
+                    setIsLoading(false);
                     alertToast("Task added successfully")
                     setRefreshData(true)
                     onClose();
@@ -171,7 +177,8 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
     
     return (
         <div className={styles.popupOverlay}>
-            <div className={styles.popupContentOuter}>
+            {isLoading && <ActivityIndicator/>}
+            {!isLoading && <div className={styles.popupContentOuter}>
                 <div className={styles.popupContent}>
                     <div className={styles.formGroupColumn}>
                         <label className={styles.label}>
@@ -301,7 +308,7 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
         </div>
     );
 }
