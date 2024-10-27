@@ -129,15 +129,14 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
 
     return (
         <div
-            className={styles.taskContainer}
-            style={isPublic ? { width: '100%', maxHeight: '80%', overflow: 'auto' } : {}}
+            className={isPublic ? styles.taskContainerPublic : styles.taskContainer}
         >   
             {isLoading && <ActivityIndicator />}
             {!isLoading && <>
 
                 <div className={styles.header1}>
                     <div className={styles.priorityContainer}>
-                        <p className={styles.priority}><span style={{ color: colors[task?.priority], fontSize: '2vw' }}>.</span>{task?.priority}</p>
+                        <p className={styles.priority}><span style={{ color: colors[task?.priority], fontSize: '25px' }}>.</span>{task?.priority}</p>
 
                         {task?.assignedTo.length > 0 && !isPublic &&
                             <div style={{height: "0.8vw", flexDirection: "row", display: "flex", gap: "0.2vw"}}>
@@ -198,8 +197,11 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                 </div>
 
                 <div className={styles.footer}>
-                    <div className={styles.dueDate} style={{ backgroundColor: task.dueDate ? setDueDateColor(task?.dueDate) : 'transparent' }}>
-                        <p>{task.dueDate ? getDueData(task?.dueDate) : '\u00A0'}</p>
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '0.5vw', alignItems: 'center'}}>
+                        {isPublic && task.dueDate && <p className={styles.dueDateName}>Due Date: </p>}
+                        <div className={styles.dueDate} style={{ backgroundColor: task.dueDate ? setDueDateColor(task?.dueDate) : 'transparent' }}>
+                            <p>{task.dueDate ? getDueData(task?.dueDate) : '\u00A0'}</p>
+                        </div>
                     </div>
                     {!isPublic && (
                         <div className={styles.taskStatusDiv}>
