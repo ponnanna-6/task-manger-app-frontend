@@ -6,6 +6,7 @@ import { formatDate, validateEmail } from "../../helper/utils";
 import Select from 'react-dropdown-select'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { alertToast, errorToast } from "../../helper/toast";
 
 export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRefreshData, userData}) {
     if (!isOpen) return null;
@@ -136,33 +137,22 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
         if (isEdit) {
             await editTaskInDb(editTaskData?._id, formData).then((res) => {
                 if (res.status == "200") {
-                    toast('🦄 Wow so easy!', {
-                        position: "top-center",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                        transition: Bounce,
-                        });
-                    // alert('updated sucessfully')
+                    alertToast("Task updated successfully")
                     setRefreshData(true)
                     onClose();
                 } else {
-                    alert("Could not update task")
+                    errorToast("Error while updating task")
                     onClose();
                 }
             });
         } else {
             await addTaskToDb(formData).then((res) => {
                 if (res.status == "200") {
-                    alert('added sucessfully')
+                    alertToast("Task added successfully")
                     setRefreshData(true)
                     onClose();
                 } else {
-                    alert("Could not add task")
+                    errorToast("Error while adding task")
                     onClose();
                 }
             });
