@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getAllUsers, getUserInfo } from '../../services/auth'
 import styles from './board.module.css'
-import { getTodaysDate } from '../../helper/utils'
+import { getTodaysDate, logOutUser } from '../../helper/utils'
 import { useNavigate } from 'react-router-dom'
 import { IoMdAdd } from "react-icons/io";
 import { VscCollapseAll } from "react-icons/vsc";
@@ -84,6 +84,8 @@ export default function Board ({}) {
             await getUserInfo().then((res) => {
                 if(res.status == "200") {
                     setUserData(res.data)
+                } else {
+                    logOutUser()
                 }
             })
             .catch(error => navigate('/login'))

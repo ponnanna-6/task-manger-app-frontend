@@ -3,6 +3,7 @@ import styles from './analytics.module.css'
 import { getUserAnalytics } from '../../services/analytics'
 import { FaCircle } from "react-icons/fa";
 import { errorToast } from '../../helper/toast';
+import ActivityIndicator from '../activityIndicator/activityIndicator';
 export default function Analytics({ }) {
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState({})
@@ -91,6 +92,7 @@ export default function Analytics({ }) {
     return (
         <div className={styles.container}>
             <p className={styles.headerText}>Analytics</p>
+            {isLoading && <ActivityIndicator/>}
             {!isLoading &&
                 <div style={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-evenly", alignItems: "center", marginTop: "10vh"}}>
                     <div className={styles.subContainer}>

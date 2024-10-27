@@ -14,6 +14,7 @@
     font-size: 2vw;
     text-align: left;
     color: #343434;
+    width: 5vw;
 }
 
 .welcomeText {
@@ -22,6 +23,17 @@
     font-size: 1.5vw;
     text-align: left;
     color: black;
+    overflow: hidden;
+    text-overflow: ellipsis ;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    width: 15vw;
+}
+
+.welcomeText:hover {
+    overflow: visible;
+    display: flex;
 }
 
 .dateText {
