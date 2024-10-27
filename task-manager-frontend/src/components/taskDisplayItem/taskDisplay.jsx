@@ -9,7 +9,7 @@ import { IoIosArrowUp } from "react-icons/io";
 import { updateCheckListStatus, updateTaskState } from '../../services/tasks';
 import EmailIcon from '../emailIcon/emailIcon';
 import Popup from '../popup/popup';
-import { alertToast, errorToast } from '../../helper/toast';
+import { alertToast, errorToast, linkCopiedToast } from '../../helper/toast';
 import ActivityIndicator from '../activityIndicator/activityIndicator';
 
 export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPublic, collapse }) {
@@ -80,7 +80,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
             onClick: () => {
                 const linkCopied = writeShareLinkToClipboard(task._id)
                 if (linkCopied) {
-                    alertToast('Link copied')
+                    linkCopiedToast('Link Copied')
                 } else {
                     errorToast('Failed to copy link')
                 }
