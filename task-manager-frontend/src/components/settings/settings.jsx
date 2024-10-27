@@ -4,6 +4,7 @@ import Form from '../form/form'
 import { useNavigate } from 'react-router-dom'
 import { getUserInfo, updateUserInfo } from '../../services/auth'
 import { logOutUser, validateEmail } from '../../helper/utils'
+import { alertToast, errorToast } from '../../helper/toast'
 
 export default function Settings({}) {
     const navigate = useNavigate()
@@ -123,11 +124,11 @@ export default function Settings({}) {
             const res = await updateUserInfo({name: formData.name, email:formData.email, password:formData.password, newPassword: formData.confirmPassword})
             
             if(res.status == 200) {
-                alert(res.data.message)
+                alertToast(res.data.message)
                 setFormData({...formData, password:"", confirmPassword:""})
                 logOutUser()
             } else{
-                alert(res.message)
+                errorToast(res.message)
                 setFormData({...formData, password:"", confirmPassword:""})
             }
         } else {

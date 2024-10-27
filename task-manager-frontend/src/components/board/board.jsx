@@ -14,6 +14,7 @@ import { shareBoard } from '../../services/acess'
 import { getBoardData } from '../../services/board'
 import { all } from 'axios'
 import EmailIcon from '../emailIcon/emailIcon'
+import { alertToast, errorToast } from '../../helper/toast'
 export default function Board ({}) {
     const navigate = useNavigate()
 
@@ -140,7 +141,7 @@ export default function Board ({}) {
         await deleteTaskById(id).then((res) => {
             if(res.status == "200") {
                 setRefreshData(true)
-                alert("Task deleted successfully")
+                alertToast("Task deleted successfully")
             }
         }).catch(error => console.log(error))
     }
@@ -149,13 +150,13 @@ export default function Board ({}) {
         await shareBoard(email).then((res) => {
             console.log(res)
             if(res.status == "200") {
-                alert("Board shared successfully")
+                alertToast("Board shared successfully")
                 setShowAddPopUp(false)
                 setRefreshData(true)
             } else {
-                alert(res.message)
+                errorToast(res.message)
             }
-        }).catch(error => alert(error))
+        }).catch(error => errorToast(error))
     }
 
     const toggleCollapse = (categoryId) => {

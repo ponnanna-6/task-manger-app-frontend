@@ -8,6 +8,7 @@ import { loginUser } from '../../services/auth'
 import { getPublicTask } from '../../services/tasks'
 import { TaskDisplay } from '../../components/taskDisplayItem/taskDisplay'
 import logo from '../../assets/logo.svg'
+import { errorToast } from '../../helper/toast'
 
 export default function PublicTask({}) {
     const { id } = useParams();
@@ -20,7 +21,7 @@ export default function PublicTask({}) {
                 if(res.status == "200") {
                     setTask(res.data)
                 } else {
-                    alert(res.message)
+                    errorToast(res.message)
                 }
             }).catch((err) => {
                 console.log(err)

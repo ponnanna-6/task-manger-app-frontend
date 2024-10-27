@@ -9,6 +9,7 @@ import { IoIosArrowUp } from "react-icons/io";
 import { updateCheckListStatus, updateTaskState } from '../../services/tasks';
 import EmailIcon from '../emailIcon/emailIcon';
 import Popup from '../popup/popup';
+import { alertToast, errorToast } from '../../helper/toast';
 
 export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPublic, collapse }) {
     const [showDropDown, setShowDropDown] = useState(false);
@@ -41,7 +42,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
         if (res.status == 200) {
             setRefreshData(true)
         } else {
-            alert("Could not update task")
+            errorToast("Could not update task status")
         }
     }
     const setDueDateColor = (dueDate) => {
@@ -74,9 +75,9 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
             onClick: () => {
                 const linkCopied = writeShareLinkToClipboard(task._id)
                 if (linkCopied) {
-                    alert('Link copied')
+                    alertToast('Link copied')
                 } else {
-                    alert('Failed to copy link')
+                    errorToast('Failed to copy link')
                 }
                 setShowDropDown(false)
             }
@@ -106,7 +107,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
         if (res.status == 200) {
             setRefreshData(true)
         } else {
-            alert("Could not update task")
+            errorToast("Could not update checklist")
         }
     };
 
