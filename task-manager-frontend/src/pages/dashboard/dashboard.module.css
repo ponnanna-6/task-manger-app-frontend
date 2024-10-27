@@ -6,9 +6,9 @@
 
 .dashboardContainer {
     display: flex;
-    width: calc(100vw - 22vw); /* Subtract the width of the fixed navbar */
+    width: calc(100vw - 15vw); /* Subtract the width of the fixed navbar */
     height: 100vh;
-    margin-left: 22vw; /* Shift the content to the right to avoid overlap */
+    margin-left: 17vw; /* Shift the content to the right to avoid overlap */
     align-self: flex-end;
     overflow-x: scroll;
     scrollbar-width: thin;

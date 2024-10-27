@@ -190,10 +190,10 @@ export default function Board({ }) {
             {!isLoading && <div className={styles.container}>
                 <div className={styles.boardHeaderContainer}>
                     <div className={styles.boardHeader}>
-                        <p className={styles.welcomeText}>{`Welcome ! ${userData?.name}`}</p>
+                        <p className={styles.welcomeText}>{`Welcome! ${userData?.name}`}</p>
                         <p className={styles.dateText}>{getTodaysDate()}</p>
                     </div>
-                    <div className={styles.boardHeader}>
+                    <div className={styles.boardHeader} style={{top: "5"}}>
                         <div style={{ display: "flex", alignItems: "center", flexDirection: "row", gap: "10px" }}>
                             <p className={styles.headerText}>Board</p>
                             <PiUsers
@@ -217,7 +217,7 @@ export default function Board({ }) {
 
                         <select className={styles.filterContainer} value={filter} onChange={(e) => filterMapping[e.target.value].onClick()}>
                             {Object.keys(filterMapping).map((key, index) =>
-                                <option key={index} value={key}>{filterMapping[key].name}</option>)
+                                <option key={index} value={key} style={{padding: "10px"}}>{filterMapping[key].name}</option>)
                             }
                         </select>
                     </div>
