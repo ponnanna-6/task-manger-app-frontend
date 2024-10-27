@@ -113,11 +113,16 @@ export default function Board({ }) {
 
     useEffect(() => {
         const getData = async () => {
+            setIsLoading(true)
             await getUserTasks(filter).then((res) => {
                 if (res.status == "200") {
+                    setIsLoading(false)
                     setAllData(res.data)
                 }
-            }).catch(error => console.log(error))
+            }).catch(error => {
+                setIsLoading(false)
+                console.log(error)
+            })
         }
         setRefreshData(false)
         getData()
