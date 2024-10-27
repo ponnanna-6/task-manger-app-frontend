@@ -67,11 +67,10 @@ export function isBeforeDueDate(dueDate) {
     const todayDate = new Date();
     const dueDateObj = new Date(dueDate);
 
-    if (todayDate > dueDateObj) {
-        return true;
-    } else {
-        return false;
-    }
+    todayDate.setHours(0, 0, 0, 0);
+    dueDateObj.setHours(0, 0, 0, 0);
+    
+    return todayDate > dueDateObj;
 }
 
 export const writeShareLinkToClipboard = (id) => {

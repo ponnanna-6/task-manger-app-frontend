@@ -205,7 +205,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                         <div className={styles.taskStatusDiv}>
                             {taskStates.map((state, index) => (
                                 state !== task?.taskStatus ? (
-                                    <div className={styles.taskStatusItem}>
+                                    <div className={styles.taskStatusItem} key={index}>
                                         <p key={index} onClick={() => updateState(state)}>{state}</p>
                                     </div>
                                 ) : null
