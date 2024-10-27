@@ -12,7 +12,7 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
     const [formData, setFormData] = useState({
         title: isEdit ? editTaskData.title : "",
         priority: isEdit ? editTaskData.priority : "",
-        assignedTo: isEdit ? editTaskData.assignedTo : "",
+        assignedTo: isEdit ? editTaskData.assignedTo : [],
         checklist: isEdit ? editTaskData.checklist : [],
         dueDate: isEdit && editTaskData.dueDate
             ? editTaskData.dueDate
@@ -59,7 +59,7 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
         },
         assignedTo: {
             message: "Enter a valid email id",
-            isValid: formData.assignedTo.length == "" || formData.assignedTo.length > 0,
+            isValid: formData.assignedTo.length == 0 || formData.assignedTo.length > 0,
             onError: () => {
                 setError((prevError) => ({ ...prevError, assignedTo: true }));
             },
@@ -123,7 +123,6 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
                 errorFormData[key].onError();
                 updatedError[key] = true;
                 isError = true;
-                console.log(key)
                 setCurrentError({ name: key, message: errorFormData[key].message })
             }
         });
@@ -174,14 +173,12 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
         if(param == "assignedTo") {
             setFormData({ ...formData, [param]: e });
             setCurrentError({ name: "", message: "" });
-            console.log(formData)
         } else {
             setFormData({ ...formData, [param]: e.target.value });
             setCurrentError({ name: "", message: "" });
         }
     };
-
-    console.log(userData)
+    
     return (
         <div className={styles.popupOverlay}>
             <div className={styles.popupContentOuter}>
