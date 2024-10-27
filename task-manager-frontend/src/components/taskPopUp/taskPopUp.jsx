@@ -195,7 +195,7 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
                     {currentError?.name == "title" && <div className={styles.error}>{currentError?.message}</div>}
 
                     <div className={styles.formGroupRow}>
-                        <label className={styles.label}>
+                        <label className={styles.label} style={{marginRight: "10px"}}>
                             Select Priority&nbsp;<span style={{ color: "red" }}>*</span>
                         </label>
                         <div className={styles.radioGroup}>
@@ -234,25 +234,25 @@ export default function TaskPopUp({ isOpen, onClose, isEdit, editTaskData, setRe
                             labelField="email"
                             valueField="email"
                             className={styles.selectContainer}
-                            placeholder="Add to assign"
+                            placeholder="Add a assignee"
                         />
                     </div>
 
                     {currentError?.name == "assignedTo" && <div className={styles.error}>{currentError?.message}</div>}
 
                     <div className={styles.formGroupColumn}>
-                        <label className={styles.label}>
-                            {`Checklist (${formData.checklist.filter(item => item.checked).length}/${formData.checklist.length})`}<span style={{ color: "red" }}>*</span>
+                        <label className={styles.label} style={{marginBottom: "10px"}}>
+                            {`Checklist (${formData.checklist.filter(item => item.checked).length}/${formData.checklist.length})`}<span style={{ color: "red" }}>&nbsp;*</span>
                         </label>
                         <ul className={styles.checklist}>
                             {formData.checklist.map((item, index) => (
-                                <li key={index} style={{alignItems: "center", padding: "5px", flexDirection: "row", display: "flex"}}>
-                                    <span style={{alignItems: "center", flexDirection: "row", display: "flex"}}>
+                                <li key={index} className={styles.checklistItem}>
+                                    <span style={{display: "flex", alignItems: "center", flexDirection: "row", width: "90%"}}>
                                         <input 
                                             type="checkbox"
                                             checked={item.checked}
                                             onChange={() => toggleChecklistItem(index)}
-                                            style={{marginRight: "10px"}}
+                                            style={{marginRight: "10px", accentColor: "#17A2B8"}}
                                         />
                                         <p className={styles.checklistText}>{item.message}</p>
                                     </span>

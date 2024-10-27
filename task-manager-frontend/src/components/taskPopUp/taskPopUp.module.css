@@ -86,7 +86,7 @@
   padding: 8px;
   border: 1px solid red;
   border-radius: 4px;
-  font-size: 1.5vw;
+  font-size: 14px;
   justify-content: center;
   align-items: center;
   margin-left: 10px;
@@ -165,16 +165,6 @@
   gap: 5px;
 }
 
-.checklist li{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  border: 1px solid #E2E2E2;
-  border-radius: 10px;
-  margin-bottom: 5px;
-}
-
 .addChecklist {
   display: flex;
   flex-direction: column;
@@ -196,14 +186,6 @@
   cursor: pointer;
   background-color: transparent;
   align-self: flex-start;
-}
-
-.deleteButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  color: red;
 }
 
 .popupButtons {
@@ -250,9 +232,36 @@
 }
 
 .checklistText {
-  font-family: "Inter";
+  font-family: 'Inter';
+  color: black;
+  font-weight: 400;
   font-size: 14px;
-  font-weight: 500;
-  color: #20102B;
-  line-height: 0px;
+  max-width: 100%;
+  white-space: normal;
+  overflow: visible;
+  word-wrap: break-word;
+  display: inline-block;
+  cursor: pointer;
+  margin: 0;
+}
+
+.checklistItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  height: auto;
+  border-radius: 5px;
+  border: 1px solid #E2E2E2;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.deleteButton {
+  font-size: 1rem;
+  flex-shrink: 0;
+  color: red;
+  cursor: pointer;
+  margin-left: 10px;
 }
