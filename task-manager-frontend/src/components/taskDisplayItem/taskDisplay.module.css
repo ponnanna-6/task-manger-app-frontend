@@ -6,7 +6,8 @@
     margin: 0.5rem;
     justify-content: flex-start;
     align-items: flex-start;
-    width: 90%;;
+    width: 90%;
+    position: relative;
 }
 
 .header1 {
@@ -35,7 +36,28 @@
 }
 
 .dropDown {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
     z-index: 1000;
+    background-color: #FFFFFF;
+    right: 0.5vw;
+    top: 4vh;
+    border-radius: 10px;
+    box-shadow: 0px 2px 22px 0px #7E7A7A40;
+    padding: 0.5vw 1.5vw 0.5vw;
+    gap: 1vh;
+}
+
+.dropDownOptionText {
+    font-family: 'Poppins';
+    font-size: 1.3vw;
+    font-weight: 520;
+    text-align: center;
+    color: black;
+    margin: 0;
+    padding: 0.5vh 0;
+    line-height: 1.2;
 }
 
 .dropDownDots {

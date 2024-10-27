@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './taskDisplay.module.css'
 import { SlOptions } from "react-icons/sl";
 import { FaChevronDown } from "react-icons/fa";
@@ -14,6 +14,27 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
     const [showDropDown, setShowDropDown] = useState(false);
     const [showChecklist, setShowChecklist] = useState(false);
     const [deletePopup, setDeletePopup] = useState(false);
+    const dropdownRef = useRef(null);
+    const buttonRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target) &&
+                buttonRef.current &&
+                !buttonRef.current.contains(event.target)
+            ) {
+                setShowDropDown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [dropdownRef, buttonRef]);
 
     const updateState = async (state) => {
         const res = await updateTaskState(task._id, state)
@@ -75,6 +96,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
         "IN PROGRESS",
         "DONE"
     ]
+
     const toggleChecklistItem = async (index) => {
         const updatedChecklist = task.checklist.map((item, i) =>
             i === index ? { ...item, checked: !item.checked } : item
@@ -91,7 +113,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
     useEffect(() => {
         setShowChecklist(false)
     }, [collapse])
-    
+
     const deleteConfirm = () => {
         setDeletePopup(false)
         deleteTask(task._id)
@@ -106,23 +128,29 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                 <div className={styles.priorityContainer}>
                     <p className={styles.priority}><span style={{ color: colors[task?.priority], fontSize: '2vw' }}>.</span>{task?.priority}</p>
 
-                    {task?.assignedTo.length>0 &&
-                        <div style={{ width: "1vw", height: "0.8vw", flexDirection: "row", display: "flex", gap: "0.2vw", borderRadius: "50%"}}>  
+                    {task?.assignedTo.length > 0 &&
+                        <div style={{ width: "1vw", height: "0.8vw", flexDirection: "row", display: "flex", gap: "0.2vw", borderRadius: "50%" }}>
                             {task?.assignedTo.map((item, index) => (
-                            <EmailIcon email={item?.email} key={index} />
+                                <EmailIcon email={item?.email} key={index} />
                             ))}
                         </div>
                     }
                 </div>
 
                 {(showDropDown && !isPublic) && (
-                    <div className={styles.dropDown}>
+                    <div ref={dropdownRef} className={styles.dropDown}>
                         {Object.keys(dropDownOptions).map((option, index) => (
-                            <p key={index} style={{ cursor: 'pointer', color: option === "Delete" ? "red" : "black" }} onClick={dropDownOptions[option].onClick}>{option}</p>
+                            <p key={index} className={styles.dropDownOptionText} style={{ cursor: 'pointer', color: option === "Delete" ? "red" : "black" }} onClick={dropDownOptions[option].onClick}>{option}</p>
                         ))}
                     </div>
                 )}
-                {!isPublic && <SlOptions className={styles.dropDownDots} onClick={() => setShowDropDown(!showDropDown)} />}
+                {!isPublic &&
+                    <button ref={buttonRef} style={{ border: 'none', backgroundColor: 'transparent', cursor: 'pointer' }}>
+                        <SlOptions
+                            className={styles.dropDownDots} onClick={() => setShowDropDown(!showDropDown)}
+                        />
+                    </button>
+                }
 
             </div>
             <p
@@ -175,7 +203,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                 )}
 
             </div>
-            
+
             <Popup
                 onConfirm={deleteConfirm}
                 isOpen={deletePopup}
