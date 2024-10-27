@@ -5,6 +5,7 @@ import Form from '../../components/form/form'
 import { useNavigate } from 'react-router-dom'
 import { registerUser } from '../../services/auth'
 import { validateEmail } from '../../helper/utils'
+import { alertToast, errorToast } from '../../helper/toast'
 
 export default function Register({}) {
     const navigate = useNavigate()
@@ -113,10 +114,10 @@ export default function Register({}) {
             const res = await registerUser(formData)
             
             if(res.status == 200) {
-                alert(res.message)
+                alertToast(res.message)
                 navigate('/login')
             } else{
-                alert(res.message)
+                errorToast(res.message)
             }
         } else {
             console.log(error)

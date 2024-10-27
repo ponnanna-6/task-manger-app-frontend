@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import styles from './analytics.module.css'
 import { getUserAnalytics } from '../../services/analytics'
 import { FaCircle } from "react-icons/fa";
+import { errorToast } from '../../helper/toast';
 export default function Analytics({ }) {
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState({})
@@ -54,13 +55,16 @@ export default function Analytics({ }) {
 
     useEffect(() => {
         const getData = async () => {
-            await getUserAnalytics().then((res) => {
-                if (res.status == 200) {
-                    setData(res.data)
+            try {
+                const res = await getUserAnalytics();
+                if (res.status === 200) {
+                    setData(res.data);
                 } else {
-                    alert(res.message)
+                    errorToast(res.message);
                 }
-            })
+            } catch (error) {
+                errorToast("An error occurred. Please try again.");
+            }
         }
         getData()
     }, [])
