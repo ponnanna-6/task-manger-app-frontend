@@ -63,7 +63,7 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
 
     const colors = {
         "HIGH PRIORITY": "red",
-        "MEDIUM PRIORITY": "yellow",
+        "MODERATE PRIORITY": "#17A2B8",
         "LOW PRIORITY": "green"
     }
 
@@ -139,8 +139,8 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                     <div className={styles.priorityContainer}>
                         <p className={styles.priority}><span style={{ color: colors[task?.priority], fontSize: '2vw' }}>.</span>{task?.priority}</p>
 
-                        {task?.assignedTo.length > 0 &&
-                            <div style={{ width: "1vw", height: "0.8vw", flexDirection: "row", display: "flex", gap: "0.2vw", borderRadius: "50%" }}>
+                        {task?.assignedTo.length > 0 && !isPublic &&
+                            <div style={{height: "0.8vw", flexDirection: "row", display: "flex", gap: "0.2vw"}}>
                                 {task?.assignedTo.map((item, index) => (
                                     <EmailIcon email={item?.email} key={index} />
                                 ))}
@@ -182,13 +182,15 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                     {(showChecklist || isPublic) &&
                         <div className={styles.checklistDropContainer} style={isPublic ? { width: '100%' } : {}}>
                             {task?.checklist?.map((item, index) => (
-                                <div key={index} className={styles.checklistItemContainer}>
+                                <div key={index} className={isPublic ? styles.checklistItemContainerPublic : styles.checklistItemContainer}>
                                     <input
                                         type="checkbox"
                                         checked={item.checked}
                                         onChange={() => !isPublic && toggleChecklistItem(index)}
+                                        className={styles.customCheckbox}
+                                        style={{ marginRight: '0.5vw' }}
                                     />
-                                    <p>{item.message}</p>
+                                    <p className={isPublic ? styles.checklistItemTextPublic : styles.checklistItemText} onClick={() => !isPublic && toggleChecklistItem(index)}>{item.message}</p>
                                 </div>
                             ))}
                         </div>
@@ -196,11 +198,9 @@ export function TaskDisplay({ task, onEditTask, deleteTask, setRefreshData, isPu
                 </div>
 
                 <div className={styles.footer}>
-                    {task.dueDate &&
-                        <div className={styles.dueDate} style={{ backgroundColor: setDueDateColor(task?.dueDate) }}>
-                            <p>{getDueData(task?.dueDate)}</p>
-                        </div>
-                    }
+                    <div className={styles.dueDate} style={{ backgroundColor: task.dueDate ? setDueDateColor(task?.dueDate) : 'transparent' }}>
+                        <p>{task.dueDate ? getDueData(task?.dueDate) : '\u00A0'}</p>
+                    </div>
                     {!isPublic && (
                         <div className={styles.taskStatusDiv}>
                             {taskStates.map((state, index) => (
