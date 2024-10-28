@@ -8,11 +8,20 @@ import { alertToast, errorToast } from '../../helper/toast'
 
 export default function Settings({}) {
     const navigate = useNavigate()
+    const [originalData, setOriginalData] = useState({
+        name: "",
+        email: "",
+    });
+    
 
     useEffect(() => {
         const getData = async() => {
             await getUserInfo().then((res) => {
                 if(res.status == "200") {
+                    setOriginalData({
+                        name: res.data?.name || "",
+                        email: res.data?.email || ""
+                    });
                     setFormData({...formData, name: res.data?.name, email: res.data?.email})
                 }
             })
@@ -120,13 +129,24 @@ export default function Settings({}) {
                 errorMessages[key].onError()
             }
         })
-        if(!isError){
+
+        const hasChanges = (
+            formData.name !== originalData.name ||
+            formData.email !== originalData.email ||
+            formData.password.length > 0
+        );
+        if(!hasChanges) {
+            alertToast("No changes detected")
+        }
+        if(!isError && hasChanges) {
             const res = await updateUserInfo({name: formData.name, email:formData.email, password:formData.password, newPassword: formData.confirmPassword})
             
             if(res.status == 200) {
                 alertToast(res.data.message)
                 setFormData({...formData, password:"", confirmPassword:""})
-                logOutUser()
+                if (formData.password.length > 0) {
+                    logOutUser();
+                }
             } else{
                 errorToast(res.message)
                 setFormData({...formData, password:"", confirmPassword:""})
