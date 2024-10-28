@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './analytics.module.css'
 import { getUserAnalytics } from '../../services/analytics'
 import { FaCircle } from "react-icons/fa";
@@ -7,6 +7,8 @@ import ActivityIndicator from '../activityIndicator/activityIndicator';
 export default function Analytics({ }) {
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState({})
+    
+    const hasFetched = useRef(false); 
 
     const [tasksContainer, setTasksContainer] = useState([
         {   
@@ -55,20 +57,27 @@ export default function Analytics({ }) {
     ])
 
     useEffect(() => {
+    
         const getData = async () => {
             try {
                 const res = await getUserAnalytics();
                 if (res.status === 200) {
                     setData(res.data);
                 } else {
+                    setIsLoading(false);
                     errorToast(res.message);
                 }
             } catch (error) {
-                errorToast("An error occurred. Please try again.");
+                console.log("An error occurred. Please try again.");
             }
+        };
+    
+        if (!hasFetched.current) {
+            getData();
+            hasFetched.current = true;
         }
-        getData()
-    }, [])
+    }, []);
+    
 
 
     useEffect(() => {
